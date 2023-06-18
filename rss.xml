@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+<title>RSS channel title</title>
+<link>RSS channel link</link>
+<desc>RSS channel desc</desc>
+<item><title>RSS item title</title><link>RSS item link</link></item>
+<item><title>RSS item title</title><link>RSS item link</link></item>
+<item><title>RSS item title</title><link>RSS item link</link></item>
+</channel></rss>
