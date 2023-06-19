@@ -17,5 +17,6 @@
          <link>https://ejemplo-rss.glitch.me//</link>
          <pubDate>Mon, 23 Dic 2019 08:00:00 EST</pubDate>
       </item>
+      <item><title>New RSS item title</title><link></link></item>
    </channel>
 </rss>
