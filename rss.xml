@@ -1,23 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Declaracion de RSS -->
-<rss version="2.0">
-   <!-- Declaracion del canal -->
-   <channel>
-      <!-- Titulo del Canal -->
-      <title>rss-example</title>
-      <!-- Descripcion del Canal -->
-      <description>Ejemplo de un RSS hecho a mano</description>
-      <!-- Enlace al sitio del Feed RSS -->
-      <link>https://ejemplo-rss.glitch.me/</link>
-      <!-- Elementos de feed, estos se muestran en los lectores de RSS en el orden que esten aquí de arriba hacia abajo -->
-      <!-- Elemento individual del Fedd -->
-      <item>
-         <title>Anunciando tutorial de como hacer un RSS a mano</title>
-         <description>Anunciando tutorial de como hacer un RSS a mano</description>
-         <link>https://ejemplo-rss.glitch.me//</link>
-         <pubDate>Mon, 23 Dic 2019 08:00:00 EST</pubDate>
-      </item>
-      <item><title>New RSS item title</title><link></link></item>
-      <item><title>New RSS item title</title><link></link></item>
-   </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+   <id>http://sdelamorena.github.io</id>
+   <title>@sdelamorena feed</title>
+   <updated>2017-09-22T03:58:52+02:00</updated>
+   <author><name>sdelamorena</name></author>
+   <entry>
+      <id>http://dev.fyicenter.com/1000702_Use_Developer_Portal_Internally.html</id>
+      <title>Use Developer Portal Internally</title>
+      <updated>2017-09-22T03:58:52+02:00</updated>
+      <published>2017-09-20T13:29:08+02:00</published>    
+      <content type="html">&lt;img align='left' width='64' height='64' src='http://dev.fyicenter.com/Azure-API/_icon_Azure-API.png' /&rt;</content>
+   </entry>
+</feed>
