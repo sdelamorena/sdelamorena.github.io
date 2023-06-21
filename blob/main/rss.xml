@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+   <id>http://sdelamorena.github.io</id>
+   <title>@sdelamorena feed</title>
+   <updated>2017-09-22T03:58:52+02:00</updated>
+   <author><name>sdelamorena</name></author>
+   <entry>
+      <id>http://dev.fyicenter.com/1000702_Use_Developer_Portal_Internally.html</id>
+      <title>Use Developer Portal Internally</title>
+      <updated>2017-09-22T03:58:52+02:00</updated>
+      <published>2017-09-20T13:29:08+02:00</published>    
+      <content type="html">&lt;img align='left' width='64' height='64' src='http://dev.fyicenter.com/Azure-API/_icon_Azure-API.png' /&rt;</content>
+   </entry>
+</feed>
