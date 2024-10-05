@@ -17,18 +17,18 @@
 		<script type="text/javascript">
 		// Form 
     $(document).ready(function(){
-      $('#form-submit').click(function(e){
+      $("#form-submit").click(function(e){
           // Pending button
-          $('#form-submit').attr({'disabled' : 'true', 'value' : 'Generando documentos...'});
+          $("#form-submit").attr({"disabled": "false", "value": "Generando documentos..."});
           $(".progress-bar-am").css({"width": "40%"});
           $(".progress-bar-n2").css({"width": "20%"});
           // Finished button
           $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize(), function(result){
             if(result){
-              $('#form-submit').attr({'disabled' : 'true', 'value' : 'Documentos generados'});
+              $("#form-submit").attr({"disabled": "false", "value": "Documentos generados"});
               $(".progress-bar-am").css({"width": "100%"});
-              $(".progress-bar-n2").css({"width": "100%"});
-              $('.dwn').removeClass("disabled"); 
+              $(".progress-bar-n2").css({"width": "100%"}); 
+              $(".dwn").removeClass("disabled");
             } 
           });
         });
@@ -58,7 +58,7 @@
         });
         // Docs disabled
         jQuery("#documento").on("click", function () {
-          jQuery(".doc-field").removeClass("style");
+          jQuery(".doc-field").css({"background-color":"", "cursor":"text"});
           var numerodoc = jQuery(this).children(":selected").attr("id");
           jQuery("#numerodoc").prop("name", numerodoc);
         });
@@ -69,7 +69,7 @@
         });
         // NA button
         jQuery("#noaportahijode, #noaportadomicilio").on("click", function () {
-          var inputClass = $(this).attr("class").split(' ')[2];
+          var inputClass = $(this).attr("class").split(" ")[2];
           jQuery("#" + inputClass).attr("value", "NO APORTA"); 
           jQuery(this).addClass("active"); 
         });
@@ -306,7 +306,7 @@
                             </div>
                           </div>
                           <div class="col-4">
-                            <a href="http://sdelamorena.github.io/output.docx" class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
+                            <a href="http://sdelamorena.github.io/pelayo/output/amarilla.docx" class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
                           </div>
                         </div>
                       </div>
@@ -324,7 +324,7 @@
                             </div>
                           </div>
                           <div class="col-4">
-                            <a href="#" class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
+                            <a href="http://sdelamorena.github.io/pelayo/output/n2.docx" class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
                           </div>
                         </div>
                       </div>
