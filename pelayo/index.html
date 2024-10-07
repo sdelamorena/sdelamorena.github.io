@@ -4,16 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pelayo</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/jquery-ui-1.10.0.custom.css">
     <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 		<script type="text/javascript">
 		// Form 
     $(document).ready(function(){
@@ -89,9 +88,7 @@
     <div class="container">
       <main>
         <!-- Header -->
-        <div class="py-3 text-center">
-          <h2>Pelayo</h2>
-        </div>
+        <div class="py-3 text-center"></div>
         <!-- Body -->
         <div class="row g-5">
           <div class="col-md-12 col-lg-12">
@@ -123,133 +120,153 @@
                     </div>
                     <input type="text" class="form-control uppercase" placeholder="Indicativo" name="indicativo">
                   </div>
-                </div>                            
-                <!-- Amarilla Persona -->
+                </div>        
+                <!-- Tabs -->
                 <div class="form-group col-md-12 mb-0">
-                <h6>Datos de la persona detenida <span class="badge badge-warning">CNP V-082</span> <span class="badge badge-primary">N2</span></h6>   
-                </div>
-                <div class="form-group col-md-4 mb-2">  
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-person-fill"></i></div>
+                  <ul class="nav nav-tabs mb-2" id="Tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="det1-tab" data-bs-toggle="tab" data-bs-target="#det1" type="button" role="tab" aria-controls="det1" aria-selected="true">Detenido 1</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="det2-tab" data-bs-toggle="tab" data-bs-target="#det2" type="button" role="tab" aria-controls="det2" aria-selected="false">Detenido 2</button>
+                    </li>
+                  </ul>
+                  <!-- Tab content -->
+                  <div class="tab-content" id="TabContent">
+                    <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
+                      <div class="form-row">
+                        <div class="form-group col-md-12 mb-0">
+                          <h6>Datos de la persona detenida <span class="badge badge-warning">CNP V-082</span> <span class="badge badge-primary">N2</span></h6>   
+                        </div>
+                        <div class="form-group col-md-4 mb-2">  
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Nombre" id="nombre" name="nombre">
+                          </div>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-people-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos">
+                          </div>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-fill-up"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode">
+                            <button type="button" class="btn btn-outline-secondary hijode" id="noaportahijode">N/A</button>
+                          </div> 
+                          <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-vcard"></i></div>
+                            </div>
+                            <select class="custom-select" id="documento">
+                              <option id="dninie">DNI/NIE</option>
+                              <option id="psp">Pasaporte español</option>
+                              <option id="otrodoc">Otro documento</option>
+                              <option id="INDOCUMENTADO" selected>Indocumentado</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-flag-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase autocomplete" placeholder="Nacionalidad" name="nacionalidad">
+                          </div>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase autocomplete" placeholder="Lugar de nacimiento" name="lugarnacimiento">
+                          </div>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-calendar3"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento">
+                          </div>
+                          <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-vcard"></i></div>
+                            </div>
+                            <input type="text" style="background-color:#e9ecef;cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc" name="indocumentado">
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase autocomplete" placeholder="Prov/País" name="provpais">
+                          </div>
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-circle"></i></div>
+                            </div>
+                            <select class="custom-select" name="sexo">
+                              <option selected value="MASCULINO">Masculino</option>
+                              <option value="FEMENINO">Femenino</option>
+                            </select>
+                          </div>   
+                        </div>
+                        <div class="form-group col-md-12 mb-0">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-building-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio">
+                            <button type="button" class="btn btn-outline-secondary domicilio" id="noaportadomicilio">N/A</button>
+                          </div>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-file-earmark-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control uppercase" placeholder="Calificación penal provisional de los hechos / Motivo de la detención" name="motivo">
+                          </div>         
+                        </div>
+                        <!-- Amarilla Cabecera -->
+                        <div class="form-group col-md-12 mb-0">
+                          <h6>Datos para la hoja de reseña <span class="badge badge-warning">CNP V-082</span></h6>   
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-database-fill-up"></i></div>
+                            </div>
+                            <select class="custom-select" name="plantillaresena">
+                              <option selected value="BPPC Madrid - Sector V">BPPC-SECTOR V</option>
+                              <option value="BPPC Madrid - Grupo Noches">BPPC-GRUPO NOCHES</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                          <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-database-fill"></i></div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal">
+                            <button type="button" class="btn btn-outline-secondary" id="noid" value="noid">N/I</button>
+                          </div> 
+                        </div>
+                        <div class="form-group col-md-4 mb-2"> 
+                          <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-badge"></i></div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <input type="text" class="form-control" placeholder="Nombre" id="nombre" name="nombre">
-                  </div>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-people-fill"></i></div>
+                    <div class="tab-pane fade" id="det2" role="tabpanel" aria-labelledby="det2-tab">
+                      ...
                     </div>
-                    <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos">
-                  </div>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-person-fill-up"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode">
-                    <button type="button" class="btn btn-outline-secondary hijode" id="noaportahijode">N/A</button>
-                  </div> 
-                  <div class="input-group mb-0">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-person-vcard"></i></div>
-                    </div>
-                    <select class="custom-select" id="documento">
-                      <option id="dninie">DNI/NIE</option>
-                      <option id="psp">Pasaporte español</option>
-                      <option id="otrodoc">Otro documento</option>
-                      <option id="INDOCUMENTADO" selected>Indocumentado</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group col-md-4 mb-2">
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-flag-fill"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase autocomplete" placeholder="Nacionalidad" name="nacionalidad">
-                  </div>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase autocomplete" placeholder="Lugar de nacimiento" name="lugarnacimiento">
-                  </div>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-calendar3"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento">
-                  </div>
-                  <div class="input-group mb-0">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-person-vcard"></i></div>
-                    </div>
-                    <input type="text" style="background-color:#e9ecef;cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc" name="indocumentado">
-                  </div>
-                </div>
-                <div class="form-group col-md-4 mb-2">
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase autocomplete" placeholder="Prov/País" name="provpais">
-                  </div>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-person-circle"></i></div>
-                    </div>
-                    <select class="custom-select" name="sexo">
-                      <option selected value="MASCULINO">Masculino</option>
-                      <option value="FEMENINO">Femenino</option>
-                    </select>
-                  </div>   
-                </div>             
-                <div class="form-group col-md-12 mb-0">
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-building-fill"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio">
-                    <button type="button" class="btn btn-outline-secondary domicilio" id="noaportadomicilio">N/A</button>
-                  </div>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-file-earmark-fill"></i></div>
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="Calificación penal provisional de los hechos / Motivo de la detención" name="motivo">
-                  </div>         
-                </div>
-                <!-- Amarilla Cabecera -->
-                <div class="form-group col-md-12 mb-0">
-                  <h6>Datos para la hoja de reseña <span class="badge badge-warning">CNP V-082</span></h6>   
-                </div>
-                <div class="form-group col-md-4 mb-2">
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-database-fill-up"></i></i></div>
-                    </div>
-                    <select class="custom-select" name="plantillaresena">
-                      <option selected value="BPPC Madrid - Sector V">BPPC-SECTOR V</option>
-                      <option value="BPPC Madrid - Grupo Noches">BPPC-GRUPO NOCHES</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group col-md-4 mb-2">
-                  <div class="input-group mb-0">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-database-fill"></i></div>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal">
-                    <button type="button" class="btn btn-outline-secondary" id="noid" value="noid">N/I</button>
-                  </div> 
-                </div>
-                <div class="form-group col-md-4 mb-2"> 
-                  <div class="input-group mb-0">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text"><i class="bi bi-person-badge"></i></div>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
-                  </div>
-                </div>         
+                  </div>    
+                </div>                                        
                 <!-- Elementos esenciales -->
                 <div class="form-group col-md-12 mb-0">
                   <h6>Información de elementos esenciales de las actuaciones <span class="badge badge-primary">N2</span></h6> 
@@ -289,7 +306,7 @@
                   </div>          
                 </div>    
               </div>
-              <input type="submit" class="w-100 btn btn-primary btn-lg mb-3" id="form-submit" value="Generar"></input> 
+              <input type="submit" class="w-100 btn btn-primary btn-lg mb-3" id="form-submit" value="Generar" /> 
             </form>
             <div class="table-responsive">
               <table class="table table-striped mb-0">
