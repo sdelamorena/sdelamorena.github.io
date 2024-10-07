@@ -19,15 +19,13 @@
       $("#form-submit").click(function(e){
           // Pending button
           $("#form-submit").attr({"disabled": "false", "value": "Generando documentos..."});
-          $(".progress-bar-am").css({"width": "40%"});
-          $(".progress-bar-n2").css({"width": "20%"});
+          $(".progress-bar-zip").css({"width": "80%"});
           // Finished button
           $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize(), function(result){
             if(result){
               $("#form-submit").attr({"disabled": "false", "value": "Documentos generados"});
-              $(".progress-bar-am").css({"width": "100%"});
-              $(".progress-bar-n2").css({"width": "100%"}); 
-              $(".dwn").removeClass("disabled");
+              $(".progress-bar-zip").css({"width": "100%"});
+              $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
             } 
           });
         });
@@ -97,15 +95,15 @@
             <h6>Datos del acta de información de derechos <span class="badge badge-primary">N2</span></h6>         
             <form method="post" id="form">
               <div class="form-row">
-                <div class="form-group col-md-4 mb-2">
+                <div class="form-group col-md-2 mb-2">
                   <div class="input-group mb-0">
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-clock"></i></div>
                     </div>
-                    <input type="text" class="form-control" placeholder="Fecha y hora de la hoja de derechos" id="horaderechos" name="horaderechos">
+                    <input type="text" class="form-control" placeholder="Hora de la hoja de derechos" id="horaderechos" name="horaderechos">
                   </div>
                 </div>
-                <div class="form-group col-md-6 mb-2">
+                <div class="form-group col-md-8 mb-2">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-people-fill"></i></div>
@@ -120,7 +118,7 @@
                     </div>
                     <input type="text" class="form-control uppercase" placeholder="Indicativo" name="indicativo">
                   </div>
-                </div>        
+                </div>
                 <!-- Tabs -->
                 <div class="form-group col-md-12 mb-0">
                   <ul class="nav nav-tabs mb-2" id="Tab" role="tablist">
@@ -135,9 +133,6 @@
                   <div class="tab-content" id="TabContent">
                     <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
                       <div class="form-row">
-                        <div class="form-group col-md-12 mb-0">
-                          <h6>Datos de la persona detenida <span class="badge badge-warning">CNP V-082</span> <span class="badge badge-primary">N2</span></h6>   
-                        </div>
                         <div class="form-group col-md-4 mb-2">  
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
@@ -221,17 +216,14 @@
                             <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio">
                             <button type="button" class="btn btn-outline-secondary domicilio" id="noaportadomicilio">N/A</button>
                           </div>
-                          <div class="input-group mb-3">
+                          <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-file-earmark-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase" placeholder="Calificación penal provisional de los hechos / Motivo de la detención" name="motivo">
+                            <input type="text" class="form-control uppercase" placeholder="Motivo de la detención" name="motivo">
                           </div>         
                         </div>
                         <!-- Amarilla Cabecera -->
-                        <div class="form-group col-md-12 mb-0">
-                          <h6>Datos para la hoja de reseña <span class="badge badge-warning">CNP V-082</span></h6>   
-                        </div>
                         <div class="form-group col-md-4 mb-2">
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
@@ -269,7 +261,7 @@
                 </div>                                        
                 <!-- Elementos esenciales -->
                 <div class="form-group col-md-12 mb-0">
-                  <h6>Información de elementos esenciales de las actuaciones <span class="badge badge-primary">N2</span></h6> 
+                  <h6>Datos de los elementos esenciales de las actuaciones <span class="badge badge-primary">N2</span></h6> 
                 </div>
                 <div class="form-group col-md-2 mb-0">
                   <div class="input-group mb-0">
@@ -313,35 +305,19 @@
                 <tbody>
                   <tr>
                     <th scope="row">1</th>
-                    <td>Hoja de reseña e identificación dactilar <span class="badge badge-warning">CNP V-082</span> </td>
                     <td>
                       <div class="container">
                         <div class="row">
-                          <div class="col-8">
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-am" role="progressbar"></div>
-                            </div>
+                          <div class="col-6">
+                            Hoja de reseña y Nota informativa con detenido <span class="badge badge-warning">CNP V-082</span> <span class="badge badge-primary">N2</span>  
                           </div>
                           <div class="col-4">
-                            <a href="http://sdelamorena.github.io/pelayo/output/amarilla.docx" class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Nota informativa con detenido <span class="badge badge-primary">N2</span></td>
-                    <td>
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-8">
                             <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-n2" role="progressbar"></div>
+                              <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-zip" role="progressbar"></div>
                             </div>
                           </div>
-                          <div class="col-4">
-                            <a href="http://sdelamorena.github.io/pelayo/output/n2.docx" class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
+                          <div class="col-2">
+                            <a class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
                           </div>
                         </div>
                       </div>
@@ -349,7 +325,7 @@
                   </tr>
                 </tbody>
               </table>
-            </div> 
+            </div>
           </div>
         </div>
       </main>
