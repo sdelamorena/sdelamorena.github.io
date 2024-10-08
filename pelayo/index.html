@@ -26,6 +26,7 @@
               $("#form-submit").attr({"disabled": "false", "value": "Finalizado"});
               $(".progress-bar-zip").css({"width": "100%"});
               $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
+              alert($("#form").serialize());
             } 
           });
           // Archive item
@@ -88,8 +89,8 @@
         });
         // NI button
         jQuery("#noid").on("click", function () {
-          jQuery("#ordinal").attr("value", "N/I");
           jQuery("#ordinal").prop("name", "ordinalnoid"); 
+          jQuery("#ordinal").attr("value", "N/I");
           jQuery(this).addClass("active"); 
         });
         // NA button
@@ -225,7 +226,7 @@
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-person-vcard"></i></div>
                             </div>
-                            <input type="text" style="background-color:#e9ecef;cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc" name="INDOCUMENTADO">
+                            <input type="text" style="background-color:#e9ecef;cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc" name="indocumentado">
                           </div>
                         </div>
                         <div class="form-group col-md-4 mb-2">
