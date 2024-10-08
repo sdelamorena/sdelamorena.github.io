@@ -42,21 +42,11 @@
         });
         // Reset button
         jQuery(".btn-reset").click(function (e) {
-            e.preventDefault();
-            jQuery("#form")[0].reset();
-            // Regrets values
-            jQuery("#hijode, #domicilio, #ordinal").val("");
-            jQuery("#noaportahijode, #noaportadomicilio, #noid").removeClass("active");
-            jQuery("#form-submit").attr({"value": "Generar"}).removeAttr("disabled");
-            jQuery(".progress-bar-zip").removeAttr("style");
-            // Default values
-            document.getElementById("horaderechos").value = time;
-            document.getElementById("horadetencion").value = time;
-            document.getElementById("instructor").value = "130.301"; 
+          location.reload(true);
         });
         // Trash button
         jQuery(".btn-trash").on("click", function () {
-            jQuery(".duplicate").val("");
+          jQuery(".duplicate").val("");
         });       
         // Horaderechos time
         const now = new Date(Date.now());
