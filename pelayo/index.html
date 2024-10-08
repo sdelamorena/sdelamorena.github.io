@@ -5,102 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pelayo</title>
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/jquery-ui-1.10.0.custom.css">
     <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>  
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 		<script type="text/javascript">
 		// Form 
     $(document).ready(function(){
+      // Send form
       $("#form-submit").click(function(e){
-          // Pending button
-          $("#form-submit").attr({"disabled": "false", "value": "Generando archivos..."});
-          $(".progress-bar-zip").css({"width": "60%"});
-          // Finished button
-          $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize(), function(result){
-            if(result){
-              $("#form-submit").attr({"disabled": "false", "value": "Finalizado"});
-              $(".progress-bar-zip").css({"width": "100%"});
-              $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
-            } 
-          });
-          // Archive item
-          var newitem = $('#add').val();
-          var uniqid = Math.round(new Date().getTime() + (Math.random() * 10));
-            $('#list').append('<li id="' + uniqid + '" class="list-group-item">' 
-            + ' ' + time + ' '
-            + '<span class="badge badge-primary">N2</span> <span class="badge badge-warning">CNP V-082</span> ' 
-            + '<a href="" class="btn btn-outline-dark btn-sm dwn" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>' + ' '
-            + '<button type="button" class="btn btn-outline-dark btn-sm listelement" data-id="' + uniqid + '"><i class="bi bi-x-circle"></i></button>'
-            + '<input type="hidden" name="listed[]" value="' + newitem + '"></li>');
-            $('#add').val('');
-          return false;
+        if ($("#documento").children(":selected").attr("id") == 'indocumentado') {
+          jQuery("#numerodoc").prop("name", "indocumentado");
+          jQuery("#numerodoc").prop("value", "indocumentado"); 
+          jQuery("#form").append("<input type='hidden' name='ind' value='Sí'/>");   
+        }
+        // Pending button
+        $("#form-submit").attr({"disabled": "false", "value": "Generando archivos..."});
+        $(".progress-bar-zip").css({"width": "60%"});
+        // Finished button
+        $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize(), function(result){
+          if(result){
+            $("#form-submit").attr({"disabled": "false", "value": "Finalizado"});
+            $(".progress-bar-zip").css({"width": "100%"});
+            $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
+            $("#form :input").prop('disabled', true);
+            //alert($("#form").serialize());
+          } 
         });
-        // Reset button
-        jQuery(".btn-reset").click(function (e) {
-          location.reload(true);
-        });
-        // Trash button
-        jQuery(".btn-trash").on("click", function () {
-          jQuery(".duplicate").val("");
-        });       
-        // Horaderechos time
-        const now = new Date(Date.now());
-        const time = now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
-        // Default items
-        document.getElementById("horaderechos").value = time;
-        document.getElementById("horadetencion").value = time;
-        document.getElementById("instructor").value = "130.301"; 
-        // Capitalize
-        jQuery("#nombre").keyup(function() {
-          var caps = jQuery("#nombre").val(); 
-          caps = caps.charAt(0).toUpperCase() + caps.slice(1);
-          jQuery("#nombre").val(caps);
-        });
-        // Name duplicate
-        jQuery("#domicilio").keyup(function() {
-          var caps = jQuery("#domicilio").val();
-          jQuery(".duplicate").val(caps);
-        });
-        // Police uppercase
-        jQuery(".uppercase").keyup(function() {
-          jQuery(this).val(jQuery(this).val().toUpperCase());
-        });
-        // Docs disabled
-        jQuery("#documento").on("click", function () {
+      });
+      // Horaderechos time
+      const now = new Date(Date.now());
+      const time = now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
+      // Default items
+      document.getElementById("horaderechos").value = time;
+      document.getElementById("horadetencion").value = time;
+      document.getElementById("instructor").value = "130.301";        
+      // Capitalize
+      jQuery(".capitalize").keyup(function() {
+        var caps = jQuery(this).val(); 
+        caps = caps.charAt(0).toUpperCase() + caps.slice(1);
+        jQuery(this).val(caps);
+      });
+      // Domicilio duplicate
+      jQuery("#domicilio").keyup(function() {
+        var caps = jQuery("#domicilio").val().toUpperCase();
+        jQuery(".duplicate").val(caps);
+      });
+      // Police uppercase
+      jQuery(".uppercase").keyup(function() {
+        jQuery(this).val(jQuery(this).val().toUpperCase());
+      });
+      // Docs disabled onclick()
+      jQuery("#documento").on("click", function () {
+        var numerodoc = jQuery(this).children(":selected").attr("id");
+        if (numerodoc != 'indocumentado'){
           jQuery(".doc-field").css({"background-color":"", "cursor":"text"});
-          var numerodoc = jQuery(this).children(":selected").attr("id");
-          jQuery("#numerodoc").prop("name", numerodoc);
-        });
-        // NI button
-        jQuery("#noid").on("click", function () {
-          jQuery("#ordinal").prop("name", "ordinalnoid"); 
-          jQuery("#ordinal").attr("value", "N/I");
+        } else {
+          jQuery(".doc-field").css({"background-color":"#e9ecef", "cursor":"default"});
+        }
+        jQuery("#numerodoc").prop("name", numerodoc);
+        jQuery("#numerodoc").prop("value", "");
+      });
+      // Reset button
+      jQuery(".btn-reset").on("click", function () {
+        location.reload(true);
+      });
+      // Trash button
+      jQuery(".btn-trash").on("click", function () {
+        jQuery(".duplicate").val("");
+      }); 
+      // NI button
+      jQuery("#noid").on("click", function () {
+        if(!jQuery(this).hasClass('active')){   
+          jQuery("#ordinal").prop("name", "ordinalnoid").attr("value", "N/I");          
           jQuery(this).addClass("active"); 
-        });
-        // NA button
-        jQuery("#noaportahijode, #noaportadomicilio").on("click", function () {
+        } else {
+          jQuery("#ordinal").prop("name", "ordinal").attr("value", "");
+          jQuery(this).removeClass("active");
+        }
+      });
+      // NA button
+      jQuery("#noaportahijode, #noaportadomicilio").on("click", function () {
+        if(!jQuery(this).hasClass('active')){
           var inputClass = $(this).attr("class").split(" ")[2];
           jQuery("#" + inputClass).attr("value", "NO APORTA"); 
           jQuery(this).addClass("active"); 
-        });
-        // Autocomplete fields
-        jQuery(function() {
-          var autoComplete = ['Afganistán','Albania','Alemania','Andorra','Angola','Antigua y Barbuda','Arabia Saudita','Argelia','Argentina','Armenia','Australia','Austria','Azerbaiyán','Bahamas','Bangladés','Barbados','Baréin','Bélgica','Belice','Benín','Bielorrusia','Birmania','Bolivia','Bosnia y Herzegovina','Botsuana','Brasil','Brunéi','Bulgaria','Burkina Faso','Burundi','Bután','Cabo Verde','Camboya','Camerún','Canadá','Catar','Chad','Chile','China','Chipre','Ciudad del Vaticano','Colombia','Comoras','Corea del Norte','Corea del Sur','Costa de Marfil','Costa Rica','Croacia','Cuba','Dinamarca','Dominica','Ecuador','Egipto','El Salvador','Emiratos Árabes Unidos','Eritrea','Eslovaquia','Eslovenia','España','Estados Unidos','Estonia','Etiopía','Filipinas','Finlandia','Fiyi','Francia','Gabón','Gambia','Georgia','Ghana','Granada','Grecia','Guatemala','Guyana','Guinea','Guinea ecuatorial','Guinea-Bisáu','Haití','Honduras','Hungría','India','Indonesia','Irak','Irán','Irlanda','Islandia','Islas Marshall','Islas Salomón','Israel','Italia','Jamaica','Japón','Jordania','Kazajistán','Kenia','Kirguistán','Kiribati','Kuwait','Laos','Lesoto','Letonia','Líbano','Liberia','Libia','Liechtenstein','Lituania','Luxemburgo','Madagascar','Malasia','Malaui','Maldivas','Malí','Malta','Marruecos','Mauricio','Mauritania','México','Micronesia','Moldavia','Mónaco','Mongolia','Montenegro','Mozambique','Namibia','Nauru','Nepal','Nicaragua','Níger','Nigeria','Noruega','Nueva Zelanda','Omán','Países Bajos','Pakistán','Palaos','Palestina','Panamá','Papúa Nueva Guinea','Paraguay','Perú','Polonia','Portugal','Reino Unido','República Centroafricana','República Checa','República de Macedonia','República del Congo','República Democrática del Congo','República Dominicana','República Sudafricana','Ruanda','Rumanía','Rusia','Samoa','San Cristóbal y Nieves','San Marino','San Vicente y las Granadinas','Santa Lucía','Santo Tomé y Príncipe','Senegal','Serbia','Seychelles','Sierra Leona','Singapur','Siria','Somalia','Sri Lanka','Suazilandia','Sudán','Sudán del Sur','Suecia','Suiza','Surinam','Tailandia','Tanzania','Tayikistán','Timor Oriental','Togo','Tonga','Trinidad y Tobago','Túnez','Turkmenistán','Turquía','Tuvalu','Ucrania','Uganda','Uruguay','Uzbekistán','Vanuatu','Venezuela','Vietnam','Yemen','Yibuti','Zambia','Zimbabue','Álava','Albacete','Alicante','Almería','Asturias','Ávila','Badajoz','Barcelona','Burgos','Cáceres','Cádiz','Cantabria','Castellón','Ciudad Real','Córdoba','La Coruña','Cuenca','Gerona','Granada','Guadalajara','Guipúzcoa','Huelva','Huesca','Islas Baleares','Jaén','León','Lérida','Lugo','Madrid','Málaga','Murcia','Navarra','Orense','Palencia','Las Palmas','Pontevedra','La Rioja','Salamanca','Segovia','Sevilla','Soria','Tarragona','Santa Cruz de Tenerife','Teruel','Toledo','Valencia','Valladolid','Vizcaya','Zamora','Zaragoza'];
-          const autoCompleteUpper = autoComplete.map(name => name.toUpperCase());
-        jQuery(".autocomplete").autocomplete({
-          source: autoCompleteUpper,
-          autoFocus: true
-        });
-        // Archive list
-        jQuery("#list").delegate(".listelement", "click", function() {
-          var elemid = $(this).attr("data-id");
-          jQuery("#" + elemid).remove();
-        });
+        } else {
+          var inputClass = $(this).attr("class").split(" ")[2];
+          jQuery("#" + inputClass).attr("value", ""); 
+          jQuery(this).removeClass("active");
+        }
       });
     });
  		</script>
@@ -109,11 +107,11 @@
     <div class="container">
       <main>
         <!-- Header -->
-        <div class="py-3 text-center"></div>
+        <div class="py-3 text-center"><h3>Pelayo (2024)</h3></div>
         <!-- Body -->
         <div class="row g-5">
           <div class="col-md-12 col-lg-12">
-            <h4 class="mb-3">Ingreso detenido <button type="button" class="btn btn-outline-secondary btn-reset btn-sm"><i class="bi bi-arrow-clockwise"></i></button></h4>           
+            <h4 class="mb-3">Ingreso detenido <button type="button" class="btn btn-outline-secondary btn-reset btn-sm">Reset <i class="bi bi-arrow-clockwise"></i></button></h4>           
             <!-- Acta Header -->
             <h6>Datos del acta de información de derechos <span class="badge badge-primary">N2</span></h6>         
             <form method="post" id="form" class="mb-2">
@@ -140,10 +138,15 @@
                       <div class="input-group-text"><i class="bi bi-car-front-fill"></i></div>
                     </div>
                     <select class="custom-select" name="cuerpo">
-                      <option selected value="PN">PN</option>
+                      <option value="GAC">GAC</option>
+                      <option value="GOR">GOR</option>
+                      <option value="UPR">UPR</option>
+                      <option value="PJ">PJ</option>
+                      <option value="UIP">UIP</option>
+                      <option selected value="PN">PN / Genérico</option>
                       <option value="PMM">PMM</option>
                     </select>
-                    <input type="text" class="form-control uppercase" placeholder="Indicativo" name="indicativo">
+                    <input type="text" class="form-control uppercase autocomplete" placeholder="Indicativo" name="indicativo">
                   </div>
                 </div>
                 <!-- Tabs -->
@@ -165,7 +168,7 @@
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-person-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control" placeholder="Nombre" id="nombre" name="nombre">
+                            <input type="text" class="form-control capitalize" placeholder="Nombre" id="nombre" name="nombre">
                           </div>
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
@@ -188,7 +191,7 @@
                               <option id="dninie">DNI/NIE</option>
                               <option id="psp">Pasaporte español</option>
                               <option id="otrodoc">Otro documento</option>
-                              <option id="INDOCUMENTADO" selected>Indocumentado</option>
+                              <option id="indocumentado" selected>Indocumentado</option>
                             </select>
                           </div>
                         </div>
@@ -247,7 +250,7 @@
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-file-earmark-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase" placeholder="Motivo de la detención" name="motivo">
+                            <input type="text" class="form-control uppercase autocomplete" placeholder="Motivo de la detención" name="motivo">
                           </div>         
                         </div>
                         <!-- Amarilla Cabecera -->
@@ -310,7 +313,7 @@
                 </div>
                 <div class="form-group col-md-12 mb-2">
                   <div class="input-group mb-2">
-                    <textarea class="form-control" placeholder="Breve resumen de los hechos" rows="3" name="hechos"></textarea>
+                    <textarea class="form-control capitalize" placeholder="Breve resumen de los hechos" rows="3" name="hechos"></textarea>
                   </div>  
                 </div>    
               </div>
@@ -340,11 +343,6 @@
                 </table>
               </div> 
             </form>
-            <form id="form-list">
-              <div class="form-group">
-                <ul id="list" class="list-group"></ul>
-              </div>
-            </form>
           </div>
         </div>
       </main>
@@ -353,4 +351,816 @@
         <p>@sdelamorena - 2024</p>
       </footer>
     </div>
+    <script>
+      $(function(){
+        // Data
+        var autoData = [
+          'Afganistán',
+          'Albania',
+          'Alemania',
+          'Andorra',
+          'Angola',
+          'Antigua y Barbuda',
+          'Arabia',
+          'Argelia',
+          'Argentina',
+          'Armenia',
+          'Australia',
+          'Austria',
+          'Azerbaiyán',
+          'Bahamas',
+          'Bangladés',
+          'Barbados',
+          'Baréin',
+          'Bélgica',
+          'Belice',
+          'Benín',
+          'Bielorrusia',
+          'Birmania',
+          'Bolivia',
+          'Bosnia y Herzegovina',
+          'Botsuana',
+          'Brasil',
+          'Brunéi',
+          'Bulgaria',
+          'Burkina Faso',
+          'Burundi',
+          'Bután',
+          'Cabo Verde',
+          'Camboya',
+          'Camerún',
+          'Canadá',
+          'Catar',
+          'Chad',
+          'Chile',
+          'China',
+          'Chipre',
+          'Ciudad del Vaticano',
+          'Colombia',
+          'Comoras',
+          'Corea del Norte',
+          'Corea del Sur',
+          'Costa de Marfil',
+          'Costa Rica',
+          'Croacia',
+          'Cuba',
+          'Dinamarca',
+          'Dominica',
+          'Ecuador',
+          'Egipto',
+          'El Salvador',
+          'Emiratos Árabes Unidos',
+          'Eritrea',
+          'Eslovaquia',
+          'Eslovenia',
+          'España',
+          'Estados Unidos',
+          'Estonia',
+          'Etiopía',
+          'Filipinas',
+          'Finlandia',
+          'Fiyi',
+          'Francia',
+          'Gabón',
+          'Gambia',
+          'Georgia',
+          'Ghana',
+          'Granada',
+          'Grecia',
+          'Guatemala',
+          'Guyana',
+          'Guinea',
+          'Guinea ecuatorial',
+          'Guinea-Bisáu',
+          'Haití',
+          'Honduras',
+          'Hungría',
+          'India',
+          'Indonesia',
+          'Irak',
+          'Irán',
+          'Irlanda',
+          'Islandia',
+          'Islas Marshall',
+          'Islas Salomón',
+          'Israel',
+          'Italia',
+          'Jamaica',
+          'Japón',
+          'Jordania',
+          'Kazajistán',
+          'Kenia',
+          'Kirguistán',
+          'Kiribati',
+          'Kuwait',
+          'Laos',
+          'Lesoto',
+          'Letonia',
+          'Líbano',
+          'Liberia',
+          'Libia',
+          'Liechtenstein',
+          'Lituania',
+          'Luxemburgo',
+          'Madagascar',
+          'Malasia',
+          'Malaui',
+          'Maldivas',
+          'Malí',
+          'Malta',
+          'Marruecos',
+          'Mauricio',
+          'Mauritania',
+          'México',
+          'Micronesia',
+          'Moldavia',
+          'Mónaco',
+          'Mongolia',
+          'Montenegro',
+          'Mozambique',
+          'Namibia',
+          'Nauru',
+          'Nepal',
+          'Nicaragua',
+          'Níger',
+          'Nigeria',
+          'Noruega',
+          'Nueva Zelanda',
+          'Omán',
+          'Países Bajos',
+          'Pakistán',
+          'Palaos',
+          'Palestina',
+          'Panamá',
+          'Papúa Nueva Guinea',
+          'Paraguay',
+          'Perú',
+          'Polonia',
+          'Portugal',
+          'Reino Unido',
+          'República Centroafricana',
+          'República Checa',
+          'República de Macedonia',
+          'República del Congo',
+          'República Democrática del Congo',
+          'República Dominicana',
+          'República Sudafricana',
+          'Ruanda',
+          'Rumanía',
+          'Rusia',
+          'Samoa',
+          'San Cristóbal y Nieves',
+          'San Marino',
+          'San Vicente y las Granadinas',
+          'Santa Lucía',
+          'Santo Tomé y Príncipe',
+          'Senegal',
+          'Serbia',
+          'Seychelles',
+          'Sierra Leona',
+          'Singapur',
+          'Siria',
+          'Somalia',
+          'Sri Lanka',
+          'Suazilandia',
+          'Sudán',
+          'Sudán del Sur',
+          'Suecia',
+          'Suiza',
+          'Surinam',
+          'Tailandia',
+          'Tanzania',
+          'Tayikistán',
+          'Timor Oriental',
+          'Togo',
+          'Tonga',
+          'Trinidad y Tobago',
+          'Túnez',
+          'Turkmenistán',
+          'Turquía',
+          'Tuvalu',
+          'Ucrania',
+          'Uganda',
+          'Uruguay',
+          'Uzbekistán',
+          'Vanuatu',
+          'Venezuela',
+          'Vietnam',
+          'Yemen',
+          'Yibuti',
+          'Zambia',
+          'Zimbabue',
+          'Álava',
+          'Albacete',
+          'Alicante',
+          'Almería',
+          'Asturias',
+          'Ávila',
+          'Badajoz',
+          'Barcelona',
+          'Burgos',
+          'Cáceres',
+          'Cádiz',
+          'Cantabria',
+          'Castellón',
+          'Ciudad Real',
+          'Córdoba',
+          'La Coruña',
+          'Cuenca',
+          'Gerona',
+          'Granada',
+          'Guadalajara',
+          'Guipúzcoa',
+          'Huelva',
+          'Huesca',
+          'Islas Baleares',
+          'Jaén',
+          'León',
+          'Lérida',
+          'Lugo',
+          'Madrid',
+          'Málaga',
+          'Murcia',
+          'Navarra',
+          'Orense',
+          'Palencia',
+          'Las Palmas',
+          'Pontevedra',
+          'La Rioja',
+          'Salamanca',
+          'Segovia',
+          'Sevilla',
+          'Soria',
+          'Tarragona',
+          'Santa Cruz de Tenerife',
+          'Teruel',
+          'Toledo',
+          'Valencia',
+          'Valladolid',
+          'Vizcaya',
+          'Zamora',
+          'Zaragoza',
+          'HOMICIDIO (homicidio doloso)',
+          'ASESINATO',
+          'HOMICIDIO IMPRUDENTE',
+          'INDUCCION/COOPERACION SUICIDIO',
+          'EUTANASIA ACTIVA',
+          'PROMOVER/FOMENTAR/INCITAR SUICIDIOS MENORES/PERSONAS CON DISCAPACIDAD',
+          'ABORTO',
+          'LESIONES',
+          'MUTILACION GENITAL',
+          'MALOS TRATOS AMBITO FAMILIAR',
+          'RIÑA TUMULTUARIA',
+          'OBTENCION, TRASPLANTE O TRAFICO ILEGAL DE ORGANOS',
+          'PROMOVER/FOMENTAR/INCITAR AUTOLESIONES MENORES/PERSONAS CON DISCAPACIDAD',
+          'LESIONES AL FETO',
+          'MANIPULACION GENETICA',
+          'DETENCION ILEGAL',
+          'SECUESTRO',
+          'AMENAZAS',
+          'AMENAZAS A GRUPO ETNICO CULTURAL O RELIGIOSO',
+          'COACCIONES',
+          'MATRIMONIO FORZADO',
+          'ACOSO CONTRA LA LIBERTAD DE LAS PERSONAS',
+          'ACOSO INMOBILIARIO',
+          'TRATO DEGRADANTE',
+          'ACOSO LABORAL O FUNCIONARIAL',
+          'MALOS TRATOS HABITUALES AMB. FAMILIAR',
+          'TORTURA',
+          'TRATA DE SERES HUMANOS CON FINES DE EXPLOTACION LABORAL',
+          'TRATA DE SERES HUMANOS PARA REALIZAR ACTIVIDADES DELICTIVAS',
+          'TRATA DE SERES HUMANOS CON FINES DE EXPLOTACION SEXUAL',
+          'TRATA DE SERES HUMANOS CON FINES DE EXTRACCION ORGANOS CORPORALES',
+          'TRATA DE SERES HUMANOS PARA MATRIMONIOS FORZADOS',
+          'AGRESION SEXUAL',
+          'AGRESION SEXUAL CON PENETRACION',
+          'DELITO DE CONTACTO MEDIANTE TECNOLOGIA CON MENOR DE 16 AÑOS CON FINES SEXUALES',
+          'ACOSO SEXUAL',
+          'EXHIBICIONISMO',
+          'PROVOCACION SEXUAL',
+          'CORRUPCION DE MENORES/ CON DISCAPACIDAD/ DIVERSIDAD FUNCIONAL',
+          'DELITOS RELATIVOS A LA PROSTITUCION (coaccion/lucro sobre la prostitucion)',
+          'PORNOGRAFIA DE MENORES',
+          'DISTRIBUCION/DIFUSION PUBLICA POR NNTT DELITOS CONTRA LA PROSTITUCION Y LIBERTAD SEXUAL DE MENORES',
+          'OMISION DEL DEBER DE SOCORRO',
+          'DESCUBRIMIENTO/REVELACION DE SECRETOS',
+          'SEXTING',
+          'ACCESO ILEGAL A SISTEMAS INFORMATICOS',
+          'INTERCEPTACION DE TRANSMISIONES NO PUBLICAS DE DATOS INFORMATICOS',
+          'FACILITACION DE DISPOSITIVOS, PROGRAMAS O CLAVES PARA ACCEDER ILEGALMENTE A DATOS O SISTEMAS INFORMATICOS',
+          'ALLANAMIENTO DE MORADA',
+          'ALLANAMIENTO DOMICILIO PERSONA JURIDICA/ESTABLECIMIENTO',
+          'INJURIAS Y CALUMNIAS A FUNCIONARIO PUBLICO, AUTORIDAD O SUS AGENTES',
+          'CALUMNIAS',
+          'INJURIAS',
+          'MATRIMONIO ILEGAL',
+          'PERFILES FALSOS CON FINES ACOSO/HOSTIGAMIENTO/HUMILLACION',
+          'OBSTACULIZACION/ACOSO INTERRUPCION VOLUNTARIA EMBARAZO',
+          'SUPOSICION DE PARTO/SUSTITUCION DE NIÑOS',
+          'ADOPCION ILEGAL (trafico de niños)',
+          'SUSTRACCION DE MENORES POR PROGENITORES',
+          'SUSTRACCION DE MENORES POR OTROS FAMILIARES',
+          'QUEBRANTAMIENTO DE LOS DEBERES DE CUSTODIA',
+          'QUEB. DEBER DE CUSTODIA/INDUCC. MENOR ABAND. DOMIC',
+          'INDUCCION DE MENORES AL ABANDONO DE DOMICILIO',
+          'ABANDONO FAMILIA',
+          'IMPAGO PRESTACIONES ECONOMICAS',
+          'ABANDONO MENOR DE EDAD',
+          'EXPLOTACION DE LA MEDICIDAD',
+          'HURTO',
+          'HURTO EN EL INTERIOR DE VEHICULO',
+          'ROBO CON FUERZA EN LAS COSAS',
+          'ROBO CON FUERZA EN LAS COSAS EN EL INTERIOR DE VEHICULO',
+          'ROBO CON VIOLENCIA O INTIMIDACION',
+          'EXTORSION',
+          'SUSTRACCION DE VEHICULO A MOTOR SIN ANIMO DE APROPIACION',
+          'SUSTRACCION DE VEHICULO A MOTOR CON ANIMO DE APROPIACION',
+          'ROBO CON VIOLENCIA DE VEHICULO A MOTOR',
+          'USURPACION',
+          'OCUPACION DE INMUEBLES',
+          'DISTRACCION AGUAS DE USO PUBLICO O PRIVATIVO',
+          'ESTAFAS INFORMATICAS',
+          'ADMINISTRACION DESLEAL',
+          'ESTAFAS CON TARJETAS DE CREDITO, DEBITO Y CHEQUE DE VIAJE',
+          'ESTAFA PROCESAL',
+          'OTRAS ESTAFAS',
+          'APROPIACION INDEBIDA',
+          'APROPIACION INDEBIDA DE VEHICULOS',
+          'DEFRAUDACION FLUIDO ELECTRICO O ANALOGAS',
+          'FRUSTRACION DE LA EJECUCION',
+          'INSOLVENCIA PUNIBLE',
+          'ALTERACION DE PRECIOS CONCURSOS/SUBASTAS',
+          'DAÑOS EN VEHICULO',
+          'DAÑOS',
+          'ESTAFA DE INVERSORES',
+          'CORRUPCION EN LOS NEGOCIOS',
+          'CORRUPCION EN EL DEPORTE',
+          'DELITOS CONTRA LA PROPIEDAD INTELECTUAL',
+          'DELITOS CONTRA LA PROPIEDAD INDUSTRIAL',
+          'ACCESO FRAUDULENTO A SERVICIOS DE RADIODIFUSION/TV/OTROS',
+          'OTROS RELATIVOS AL MERCADO/CONSUMIDORES',
+          'SUSTRACCION DE COSA PROPIA',
+          'DELITO DE ESPIONAJE INDUSTRIAL Y SECRETO PROFESIONAL',
+          'DELITOS SOCIETARIOS',
+          'ATAQUES A DATOS O PROGRAMAS INFORMATICOS',
+          'ATAQUES A SISTEMAS INFORMATICOS',
+          'RECEPTACION/OTRAS COND. AFINES',
+          'BLANQUEO DE CAPITALES',
+          'MAQUINACIONES PARA ALTERAR PRECIOS',
+          'FINANCIACION ILEGAL PARTIDOS POLITICOS',
+          'FACILITACION DE DISPOSITIVOS, PROGRAMAS O CLAVES PARA COMETER ATAQUES INFORMATICOS',
+          'CONTRA LA HACIENDA PUBLICA',
+          'CONTRA LA HACIENDA DE LA UNION EUROPEA',
+          'CONTRA LA SEGURIDAD SOCIAL',
+          'FALSEDAD CONDICIONES OBTENCION SUBVENCION',
+          'CONTRA LOS DERECHOS TRABAJADORES',
+          'TRAFICO ILEGAL/INMIGRACION CLANDESTINA FAVORECIENDO ENTRADA/TRANSITO',
+          'TRAFICO ILEGAL/INMIGRACION CLANDESTINA FAVORECIENDO ESTANCIA',
+          'DELITOS SOBRE LA ORDENACION DEL TERRITORIO Y EL URBANISMO',
+          'PREVARICACION URBANISTICA',
+          'CONTRA EL PATRIMONIO HISTORICO',
+          'EMISIONES, VERTIDOS, DEPOSITOS TOXICOS',
+          'OTROS CONTRA RECURSOS NATURALES Y MEDIO AMBIENTE',
+          'TRAFICO ILEGAL DE ESPECIES PROTEGIDAS',
+          'CAZA',
+          'MARISQUEO ILEGAL',
+          'PESCA',
+          'MALTRATO DE ANIMAL DOMESTICO',
+          'OTROS RELATIVOS PROTECCION FLORA Y FAUNA',
+          'DELITO DE RIESGO CATASTROFICO',
+          'INCENDIOS',
+          'INCENDIOS FORESTALES',
+          'TRAFICO DE DROGAS',
+          'OTROS CONTRA LA SALUD PUBLICA',
+          'CONDUCCION A VELOCIDAD EXCESIVA',
+          'CONDUCCION BAJO INFLUENCIA DROGAS/ALCOHOL',
+          'ABANDONO DEL LUGAR DEL ACCIDENTE',
+          'NEGATIVA SOMETIMIENTO A PRUEBAS LEGALES',
+          'CONDUCCION TEMERARIA',
+          'CONDUCIR SIN PERMISO O LICENCIA',
+          'CREAR GRAVE RIESGO PARA LA CIRCULACION',
+          'OTROS CONTRA LA SEGURIDAD DEL TRAFICO',
+          'FALSIFICACION/TRAFICO TARJETAS CREDITO Y DEBITO/CHEQUES VIAJE',
+          'FALSIFICACION MONEDA, SELLOS Y EF. TIMBRADOS',
+          'FALSIFICACION/TRAFICO DE DNI/PASAPORTE',
+          'OTRAS FALSIFICACIONES DOCUMENTOS',
+          'FABRICACION/TENENCIA DE UTILES PARA FALSIFICAR',
+          'USURPACION DE ESTADO CIVIL',
+          'USURPACION DE FUNCIONES PUBLICAS',
+          'INTRUSISMO',
+          'PREVARICACION ADMINISTRATIVA',
+          'ABANDONO DESTINO/OMISION DEBER PERSEGUIR DELITOS',
+          'DESOBEDIENCIA/DENEGACION DE AUXILIO',
+          'INFIDELIDAD CUSTODIA DOCUMENTOS/VIOLAC. SECRETOS',
+          'COHECHO',
+          'TRAFICO INFLUENCIAS',
+          'MALVERSACION',
+          'FRAUDES Y EXACCIONES ILEGALES',
+          'ESTAFA O FRAUDE PRESTACIONES SEG. SOCIAL',
+          'NEGOCIOS O ACTIVIDADES PROHIBIDAS/ABUSOS',
+          'PREVARICACION JUDICIAL',
+          'ENCUBRIMIENTO',
+          'REALIZACION ARBITRARIA DEL PROPIO DERECHO',
+          'ACUSACION DENUNCIA FALSA',
+          'SIMULACION DE DELITO',
+          'OBSTRUCCION A LA JUSTICIA',
+          'QUEBRANTAMIENTO DE CONDENA',
+          'QUEBRANTAMIENTO DE ORDEN DE PROTECCION Y ALEJAMIENTO',
+          'EVASION DE ESTABLECIMIENTO PENITENCIARIO',
+          'OTROS CONTRA LA ADMON. DE JUSTICIA',
+          'DELITO CONTRA LA CORONA',
+          'DELITO CONTRA LAS INSTITUCIONES DEL ESTADO',
+          'PROMOCION/INCITACION PUBLICA AL ODIO, HOSTILIDAD, DISCRIMINACION',
+          'ELABORACION/TENENCIA Y/O DIFUSION DE SOPORTES PARA INCITAR ODIO',
+          'NEGACION/TRIVIALIZACION/ENALTECIMIENTO CRIMENES CONTRA HUMANIDAD',
+          'HUMILLACION/MENOSPRECIO/DESCREDITO CONTRA LA DIGNIDAD DE PERSONAS',
+          'ENALTECIMIENTO O JUSTIFICACION DE LOS DELITOS DE ODIO',
+          'REUNION, MANIFESTACION ILEGAL',
+          'ASOCIACION ILICITA',
+          'CONTRA LA LIBERTAD DE CONCIENCIA Y LOS SENTIMIENTOS RELIGIOSOS',
+          'CONTRA EL RESPETO A LOS DIFUNTOS',
+          'ASOCIACION ILICITA CON FINES DE ODIO Y DISCRIMINACION',
+          'DENEGACION POR PARTICULAR ENCARGADO SERVICIO PUBLICO DE PRESTACIONES POR MOTIVOS DE ODIO',
+          'DENEGACION POR EMPRESARIO/PROFESIONAL DE PRESTACIONES POR MOTIVOS DE ODIO',
+          'ULTRAJES A ESPAÑA',
+          'OTROS CONTRA LA CONSTITUCION',
+          'SEDICION',
+          'RESISTENCIA/DESOBEDIENCIA',
+          'ATENTADO AUTORIDAD',
+          'ATENTADO AGENTES',
+          'ATENTADO A FUNCIONARIO PUBLICO',
+          'DESORDENES PUBLICOS',
+          'DE LAS ORGANIZACIONES Y GRUPOS CRIMINALES',
+          'TENENCIA DE ARMAS, MUNICIONES Y/O EXPLOSIVOS.',
+          'TERRORISMO',
+          'DESCREDITO, MENOSPRECIO O HUMILLACION DE VICTIMAS DE TERRORISMO',
+          'APOLOGIA DEL TERRORISMO',
+          'ADOCTRINAMIENTO, ADIESTRAMIENTO, CAPACITACION TERRORISMO',
+          'TRASLADO/ESTABLECIMIENTO TERRITORIO CONTROLADO GRUPO TERRORISTA',
+          'FINANCIACION DEL TERRORISMO',
+          'TRAFICO O DEPOSITO DE ARMAS',
+          'TRAFICO O DEPOSITO MUNICIONES',
+          'TRAFICO O DEPOSITO EXPLOSIVOS',
+          'INSTIGACION AL TERRORISMO',
+          'PLANEAMIENTO DEL TERRORISMO',
+          'TRAICION',
+          'DELITOS CONTRA LA PAZ O INDEPENDENCIA DEL ESTADO',
+          'DELITOS CONTRA LA DEFENSA NACIONAL',
+          'DESCUBRIMIENTO Y REVELACION DE SECRETOS E INFORMACIONES RELATIVAS A LA DEFENSA NACIONAL',
+          'OTROS CONTRA LA COMUNIDAD INTERNACIONAL',
+          'GENOCIDIO',
+          'LESA HUMANIDAD',
+          'PIRATERIA',
+          'MALOS TRATOS DE OBRA SIN LESION',
+          'VEJACIONES LEVES',
+          'ABANDONO DE ANIMALES DOMESTICOS',
+          'USO INDEBIDO UNIFORME, TRAJE E INSIGNIA',
+          'INFRACCION NORMATIVA SEGURIDAD AEROPORTUARIA Y NAVEGACION AEREA',
+          'LEGISLACION SOBRE MARINA MERCANTE',
+          'INFRACCION A LA NORMATIVA SOBRE CAZA',
+          'INFRACCION A LA NORMATIVA SOBRE PESCA',
+          'INFRACCION A LA NORMATIVA SOBRE MONTES',
+          'LEGISLACION SOBRE CONTROL DE CAMBIOS',
+          'OTRAS INFRACCIONES LEGISLACION SOBRE CONTRABANDO',
+          'CONTRABANDO OBRAS DE ARTE',
+          'INFRACCION NORMATIVA ANIMALES DE COMPAÑIA Y PELIGROS',
+          'INFRACCIONES LEY 10/2010 DE PREVENCION DE BLANQUEO DE CAPITALES Y FINANCIACION DEL TERRORISMO',
+          'OTROS CONTRA LOS RECURSOS NATURALES, EL MEDIO AMBIENTE Y LA PROTECCION DE LA FLORA Y LA FAUNA',
+          'INFRACCION A LA NORMATIVA SOBRE VIAS PECUARIAS',
+          'INFRACCION A LA NORMATIVA SOBRE ESPACIOS NATURALES, FLORA Y FAUNA',
+          'INFRACCION A LA NORMATIVA SOBRE RESIDUOS Y VERTIDOS',
+          'INFRACCION A LA NORMATIVA SOBRE MINAS',
+          'INFRACCION A LA NORMATIVA SOBRE CONTAMINACION ATMOSFERICA',
+          'INFRACCION NORMATIVA SANIDAD ANIMAL, EPIZOOTIAS Y MATADEROS',
+          'INFRACCION A LA NORMATIVA SOBRE AGUAS',
+          'INFRACCION A LA NORMATIVA SOBRE COSTAS',
+          'ACTOS RACISTAS, XENOFOBOS E INTOLERANTES EN EL DEPORTE',
+          'PROMOVER O PARTICIPAR EN ALTERCADOS EN COMPETICIONES DEPORTIVAS',
+          'INVASION DEL TERRENO DE JUEGO',
+          'LANZAMIENTO DE OBJETOS EN COMPETICIONES DEPORTIVAS',
+          'INTRODUCIR ARMAS U OBJETOS CONTUNDENTES EN COMPETICIONES DEPORTIVAS',
+          'PANCARTAS O PROPAGANDA INCITANDO A LA VIOLENCIA EN COMPETICIONES DEPORTIVAS',
+          'DAÑOS A INSTALACIONES EN RECINTOS DEPORTIVOS',
+          'PETARDOS, BENGALAS O BOTES DE HUMO EN COMPETICIONES DEPORTIVAS',
+          'APEDREAR AUTOBUSES DE TRANSPORTE EN COMPETICIONES DEPORTIVAS',
+          'CONSUMO, INTRODUCCION DE BEBIDAS ALCOHOLICAS O/ VENTA DE ENVASES RIGIDOS EN COMPETICIONES DEPORTIVA',
+          'CONSUMO DE SUSTANCIAS ESTUPEFACIENTES EN COMPETICIONES DEPORTIVAS',
+          'AGRESION O INTENTO ARBITROS, JUGADORES O LINIERES EN COMPETICIONES DEPORTIVAS',
+          'AGRESION O INSULTO A POLICIAS O VIGILANTES DE SEGURIDAD EN COMPETICIONES DEPORTIVAS',
+          'CONDUCTA INDECOROSA EN COMPETICIONES DEPORTIVAS',
+          'OTROS HECHOS INFRACCION LEY DEPORTE Y LEY 19/07',
+          'OTROS CONTRA LA LEY DE EXTRANJERIA',
+          'ENTRADA ILEGAL / INTERCEPTACIONES EN FRONTERAS',
+          'ESTANCIA IRREGULAR',
+          'INCOACION DE EXPEDIENTE O EXPULSION DE COMUNITARIO',
+          'ACTIVIDADES CONTRARIAS A LA SEG.NACIONAL',
+          'EXTRANJERO NO ADMISIBLE (SIS)',
+          'CONDENA POR DELITO CON PRIV.LIB.SUP.A UN AÑO',
+          'QUEBRANTAR PROHIBICION DE ENTRADA',
+          'EXPULSION JUDICIAL',
+          'EXPULSION DE CONDENADOS',
+          'OTRAS CAUSAS DE EXPULSION',
+          'EJECUCION DE EXPULSION POR NO HABER ABANDONADO EL TERRITORIO NACIONAL EN EL PLAZO CONCEDIDO',
+          'IDENTIFICACION Ley O. 4/2015',
+          'art. 35.1 REUNION/MANIFESTACION PROHIBIDA/NO COMUNICA EN INSTALACION ESTRATEGICA Y/O SOBREVUELO',
+          'art. 35.2 FABRICA/TENENCIA DE ARMAS/EXPLOSIVOS CON PERJUICIO GRAVE',
+          'art. 35.3 ESPECTACULOS PROHIBIDOS',
+          'art. 35.4 PROYECCION HACES DE LUZ PILOTOS/CONDUCTORES TRANSPORTE',
+          'art. 36.1 PERTURBACION DE SEGURIDAD CIUDADANA EN ACTOS PUBLICOS',
+          'art. 36.2 PERTURBACION GRAVE SEDE CONGRESO/SENADO/ASAMBLEA',
+          'art. 36.3 DESORDENES PUBLICOS CON MOBILIARIO URBANO/VEHICULO/OBJETOS',
+          'art. 36.4 OBSTRUCCION AUTORIDAD/EMPLEADO PUBLICO EJERCICIO FUNCIONES',
+          'art. 36.5 OBSTACULALIZACION SERVICIOS EMERGENCIAS',
+          'art. 36.6 RESISTENCIA/DESOBEDIENCIA AUTORIDAD- NEGATIVA A IDENTIFICACION',
+          'art. 36.7 NEGATIVA DISOLUCION REUNION/MANIFESTACION',
+          'art. 36.8 PERTURBACION REUNION/MANIFESTACION LICITA',
+          'art. 36.9 INTRUSION/SOBREVUELO EN INFRAESTRUCTURA SERVICIOS BASICOS',
+          'art. 36.10 PORTAR/EXHIBIR/USAR ARMAS PROHIBIDAS',
+          'art. 36.11 SOLICITUD/ACEPTACION SERVICIOS SEXUALES RETRIBUIDOS',
+          'art. 36.12 FABRICA/TENENCIA DE ARMAS/EXPLOSIVOS',
+          'art. 36.13 NEGATIVA INSPECCION ESTABLECIMIENTO',
+          'art. 36.14 USO PUBLICO INDEBIDO UNIFORME/INSIGNIAS OFICIALES',
+          'art. 36.15 FALTA/NEGATIVA COLABORACION CON FF Y CC S',
+          'art. 36.16 CONSUMO/TENENCIA DROGAS EN VIAS PUBLICAS/ESTABLECIMIENTO/TRANSPORTE- ABANDONO DE INSTRUME',
+          'art. 36.17 TRASLADOS FACILITACION CONSUMO DROGAS (CUNDAS)',
+          'art. 36.18 PLANTACION DROGAS LUGAR VISIBLE AL PUBLICO',
+          'art. 36.19 TOLERANCIA CONSUMO DROGAS /ESTABLECIMIENTOSLOCALES',
+          'art. 36.20 CARENCIA REGISTROS ACTIVIDADES',
+          'art. 36.21 ALEGACION DATOS FALSOS PARA OBTENCION DOCUMENTACION',
+          'art. 36.22 IMCUMPLIR RESTRICCIONES NAVEGACION MAR/AIRE',
+          'art. 36.23 USO DATOS/IMAGENES AUTORIDADES/FF Y CC DE S',
+          'art. 37.1 REUNION/MANIFESTACION NO COMUNICADAS/PROHIBIDAS',
+          'art. 37.2 EXHIBICION OBJETOS PELIGROSOS ANIMO INTIMIDATORIO',
+          'art. 37.3 INCUMPLIMIENTO RESTRICCIONES PEATONALES',
+          'art. 37.4 FALTA RESPETO/CONSIDERACION A FF Y CC DE S.',
+          'art. 37.5 REALIZAR O INCITAR ACTOS OBSCENOS CONTRA LIB SEXUAL',
+          'art. 37.6 PROYECTAR HACES DE LUZ A FF Y CC DE S',
+          'art. 37.7 OCUPACION/PERMANENCIA INMUEBLE/VENTA AMBULANTE NO AUTORIZADA',
+          'art. 37.8 OMISION/CONSERVACION DOCUMENTOS ARMAS/EXPLOSIVOS- NO COMUNICAR PERDIDA',
+          'art. 37.9 IRREGULARIDAD REGISTROS/DATOS FALSOS- OMISION COMUNICACION EN PLAZOS',
+          'art. 37.10 OBLIGACION OBTENCION DNI -NEGLIGENCIA PERDIDA/SUSTRACCION',
+          'art. 37.11 3º o + PERDIDA/DETERIORO DNI EN 1 AÑO',
+          'art. 37.12 NEGATIVA A RETIRADA DNI',
+          'art. 37.13 DAÑOS/DESLUCIMIENTO BIENES MUEBLES/INMUEBLES',
+          'art. 37.14 ESCALO DE EDIFICIOS/MONUMENTOS',
+          'art. 37.15 REMOCION PRECINTOS/VALLAS COLOCADOS FF Y CC DE S',
+          'art. 37.16 LIBERAR ANIMAL /FEROZDAÑINO -ABANDONO ANIMAL DOMESTICO',
+          'art. 37.17 CONSUMO DE BEBIDAS ALCOHOLICAS LUGARES PUBLICOS',
+          'LEGISLACION SOBRE REGIMEN ELECTORAL',
+          'LEY TRIBUNAL DEL JURADO',
+          'LEGISLACION SOBRE EL JUEGO',
+          'INFRACCION A LA LEGISLACION SOBRE CASINOS Y SALAS DE JUEGO',
+          'INFRACCION A LA LEGISLACION SOBRE LOTERIAS Y APUESTAS',
+          'INFRACCION A LA LEGISLACION SOBRE MAQUINAS RECREATIVAS Y DE AZAR',
+          'INFRACCION A LA LEGISLACION SOBRE RIFAS Y TOMBOLAS',
+          'OTRA INFRACCION A LA LEGISLACION SOBRE JUEGO',
+          'INFRACCION NORMATIVA SOBRE ARMAS',
+          'INFRACCION NORMATIVA SOBRE EXPLOSIVOS',
+          'INFRACCION A LA NORMATIVA SOBRE URBANISMO Y ORDENACION DE PATRIMONIO',
+          'INFRACCION A LA NORMATIVA SOBRE PATRIMONIO HISTORICO',
+          'INFRACCION A LA NORMATIVA SOBRE ACAMPADAS Y ALOJAMIENTOS TURISTICOS',
+          'INFRACCION A LA NORMATIVA SOBRE ASOCIACIONES',
+          'INFRACCION A LA NORMATIVA SOBRE PROTECCION CIVIL',
+          'INFRACCION NORMATIVA IMPUESTOS ESPECIALES',
+          'INFRACCION NORMATIVA MERCADO DE TABACO',
+          'INFRACCION NORMATIVA TELECOMUNICACIONES',
+          'NORMATIVA SEGURIDAD DE REDES Y SISTEMAS DE LA INFORMACION',
+          'INFRACCION A LA NORMATIVA SOBRE PROTECCION DE MENORES',
+          'INFRACCION NORMATIVA SERVICIOS SOCIEDAD DE LA INFORMACION Y DE COMERCIO',
+          'NORMATIVA PROTECCION DATOS PERSONALES Y GARANTIA DERECHOS DIGITALES',
+          'INFRACCION NORMATIVA SERVICIOS ELECTRONICOS DE CONFIANZA',
+          'INFRACCION NORMATIVA SANIDAD Y CONSUMO',
+          'INFRACCION NORMATIVA FINANCIERA, IVA Y OTROS TRIBUTOS',
+          'OTRAS LEYES ESPECIALES',
+          'DISPOSICION AUT. GUBERNATIVA',
+          'INCUMPLIMIENTO NORMATIVA PREVENCION COVID-19',
+          'INFRACCION NORMATIVA ESPECTACULOS TAURINOS',
+          'INFRACCION NORMATIVA ACUSTICA',
+          'INFRACCION A LA NORMATIVA SOBRE COMERCIO O REPARACION DE OBJETOS USADOS',
+          'INFRACCION A LA NORMATIVA SOBRE COMPRAVENTA DE JOYAS Y METALES PRECIOSOS',
+          'INFRACCION A LA NORMATIVA SOBRE DESGUACE DE VEHICULOS DE MOTOR',
+          'LEGISLACION SOBRE SEGURIDAD PRIVADA',
+          'INFRACCION A LA NORMATIVA SOBRE HOSPEDAJE',
+          'INFRACCION ADMI JUEGO ONLINE',
+          'LEGISLACION SOBRE ESTABLECIMIENTOS, ESPECTACULOS PUBLICOS Y ACTIVIDADES RECREATIVAS',
+          'ACCIDENTE LABORAL',
+          'HECHOS DE CARÁCTER NO PENAL CON FINES DE ODIO Y DISCRIMINACION',
+          'DESAPARICION DE PERSONAS',
+          'REINTEGRO DE PERSONAS',
+          'COMUNICACION INFORMACION BASE SIAPSRN',
+          'CONCENTRACION LEGAL',
+          'MANIFESTACION LEGAL',
+          'SOLICITUD DE INFORMACION SOBRE SERVICIO SIAPSRN',
+          'CONSENTIMIENTO PARA SOLICITUD DE INFORMACION ADMINISTRATIVA',
+          'CONSENTIMIENTO PARA SOLICITUD DE INFORMACION E INCORPORACION DATOS A INTCF',
+          'REQUERIMIENTO ENTRE SIAPSRN Y PUNTO DE CONTACTO',
+          'COLABORACION JUDICIAL/FISCAL RELACIONADO CON RNS',
+          'SUICIDIO',
+          'SERVICIOS HUMANITARIOS',
+          'DESCUBRIMIENTO DE CADAVER Y RESTOS HUMANOS IDENTIFICADOS',
+          'DESCUBRIMIENTO DE RESTOS HUMANOS SIN IDENTIFICAR',
+          'MUERTE POR SOBREDOSIS',
+          'MUERTE EN INMIGRACION IRREGULAR',
+          'AHOGADOS',
+          'ATROPELLO DE TREN',
+          'INTERVENCIONES EN DESAHUCIOS',
+          'INSPECCIONES DE ESTABLECIMIENTOS',
+          'RESCATES Y SALVAMENTOS',
+          'DESALOJO DE INMUEBLES A INICIATIVA DE LAS FF. y CC de SEG. ESTADO',
+          'DESALOJO DE INMUEBLES A REQUERIMIENTO JUDICIAL',
+          'RECLAMACION POLICIAL',
+          'RECLAMACION JUDICIAL INTERNACIONAL',
+          'RECLAMACION JUDICIAL NACIONAL',
+          'ABSENTISMO ESCOLAR',
+          'COMPROBACION DE ALARMAS',
+          'AVERIGUACIONES DE DOMICILIO Y PARADERO',
+          'ACTUACIONES MENORES/INCAPACES EN SITUACION DE RIESGO',
+          'OTROS AUXILIOS ADMINISTRATIVOS Y AUTORIDAD JUDICIAL',
+          'PUNTO DE VENTA DE DROGA DESACTIVADO',
+          'PERDIDA/EXTRAVIO DE OBJETOS/DOCUMENTACION',
+          'RECUPERACION DE OBJETOS/DOCUMENTACION DE PROCEDENCIA DESCONOCIDA',
+          'INCENDIOS FORTUITOS',
+          'INCENDIOS FORESTALES FORTUITOS',
+          'Z-130',
+          'Z-131',
+          'Z-132',
+          'Z-133',
+          'Z-134',
+          'Z-135',
+          'APV-10',
+          'APV-11',
+          'APV-12',
+          'APV-13',
+          'APV-14',
+          'APV-15',
+          'APV-16',
+          'APV-17',
+          'APV-18',
+          'APV-19',
+          'APV-20',
+          'APV-21',
+          'APV-22',
+          'APV-23',
+          'APV-24',
+          'APV-25',
+          'APV-26',
+          'APV-27',
+          'APV-28',
+          'APV-29',
+          'APV-200',
+          'APV-201',
+          'APV-202',
+          'APV-203',
+          'APV-204',
+          'APV-205',
+          'APV-206',
+          'APV-207',
+          'APV-208',
+          'BRONCE-0',
+          'BRONCE-1',
+          'BRONCE-2',
+          'BRONCE-3',
+          'BRONCE-4',
+          'BRONCE-5',
+          'BRONCE-6',
+          'BRONCE-7',
+          'BRONCE-8',
+          'BRONCE-9',
+          'BRONCE-10',
+          'BRONCE-11',
+          'BRONCE-12',
+          'BRONCE-13',
+          'BRONCE-14',
+          'BRONCE-15',
+          'BRONCE-16',
+          'BRONCE-17',
+          'BRONCE-18',
+          'BRONCE-19',
+          'BRONCE-20',
+          'BRONCE-21',
+          'BRONCE-22',
+          'BRONCE-23',
+          'BRONCE-24',
+          'BRONCE-25',
+          'BRONCE-26',
+          'BRONCE-27',
+          'BRONCE-28',
+          'BRONCE-29',
+          'BRONCE-30',
+          'BRONCE-31',
+          'BRONCE-32',
+          'BRONCE-33',
+          'BRONCE-34',
+          'BRONCE-35',
+          'BRONCE-36',
+          'BRONCE-37',
+          'BRONCE-38',
+          'BRONCE-39',
+          'BRONCE-40',
+          'BRONCE-41',
+          'BRONCE-42',
+          'BRONCE-43',
+          'BRONCE-44',
+          'BRONCE-45',
+          'BRONCE-46',
+          'BRONCE-47',
+          'BRONCE-48',
+          'BRONCE-49',
+          'BRONCE-50',
+          'BRONCE-51',
+          'BRONCE-52',
+          'BRONCE-53',
+          'BRONCE-54',
+          'BRONCE-55',
+          'BRONCE-56',
+          'BRONCE-57',
+          'BRONCE-58',
+          'BRONCE-59',
+          'BRONCE-60',
+          'BRONCE-61',
+          'BRONCE-62',
+          'BRONCE-63',
+          'BRONCE-64',
+          'BRONCE-65',
+          'BRONCE-66',
+          'BRONCE-67',
+          'BRONCE-68',
+          'BRONCE-69',
+          'BRONCE-70',
+          'BRONCE-71',
+          'BRONCE-72',
+          'BRONCE-73',
+          'BRONCE-74',
+          'BRONCE-75',
+          'BRONCE-76',
+          'BRONCE-77',
+          'BRONCE-78',
+          'BRONCE-79',
+          'BRONCE-80',
+          'BRONCE-81',
+          'BRONCE-82',
+          'BRONCE-83',
+          'BRONCE-84',
+          'BRONCE-85',
+          'BRONCE-86',
+          'BRONCE-87',
+          'BRONCE-88',
+          'BRONCE-89',
+          'BRONCE-90',
+          'BRONCE-91',
+          'BRONCE-92',
+          'BRONCE-93',
+          'BRONCE-94',
+          'BRONCE-95',
+          'BRONCE-96',
+          'BRONCE-97',
+          'BRONCE-98',
+          'BRONCE-99',
+          'BRONCE-100',
+          'BRONCE-101',
+          'BRONCE-102',
+          'BRONCE-103',
+          'BRONCE-104',
+          'BRONCE-105',
+          'BRONCE-106',
+          'BRONCE-107',
+          'BRONCE-108',
+          'BRONCE-109',
+          'BRONCE-110',
+          'BRONCE-111',
+          'BRONCE-112',
+          'BRONCE-113',
+          'BRONCE-114',
+          'BRONCE-115',
+          'BRONCE-116',
+          'BRONCE-117',
+          'BRONCE-118',
+          'BRONCE-119',
+          'BRONCE-120',
+          'BRONCE-121',
+          'BRONCE-122',
+          'BRONCE-123',
+          'BRONCE-124',
+          'BRONCE-125',
+          'BRONCE-126',
+          'BRONCE-127',
+          'BRONCE-128',
+          'BRONCE-129',
+          'BRONCE-130',
+          'PUERTO-1313',
+          'PUERTO-1314',
+          'PUERTO-1315',
+          'PUERTO-1316',
+          'PUERTO-1317',
+          'PUERTO-1318',
+          'PUERTO-1319',
+          'PUERTO-1320'
+        ];
+        // Autocomplete
+        $( ".autocomplete" ).autocomplete({
+          source: autoData,
+          autoFocus: true
+        });   
+      });
+    </script>
 </html>
