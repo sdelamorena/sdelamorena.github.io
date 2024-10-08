@@ -18,27 +18,54 @@
     $(document).ready(function(){
       $("#form-submit").click(function(e){
           // Pending button
-          $("#form-submit").attr({"disabled": "false", "value": "Generando documentos..."});
-          $(".progress-bar-zip").css({"width": "80%"});
+          $("#form-submit").attr({"disabled": "false", "value": "Generando archivos..."});
+          $(".progress-bar-zip").css({"width": "60%"});
           // Finished button
           $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize(), function(result){
             if(result){
-              $("#form-submit").attr({"disabled": "false", "value": "Documentos generados"});
+              $("#form-submit").attr({"disabled": "false", "value": "Finalizado"});
               $(".progress-bar-zip").css({"width": "100%"});
               $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
             } 
           });
+          // Archive item
+          var newitem = $('#add').val();
+          var uniqid = Math.round(new Date().getTime() + (Math.random() * 10));
+            $('#list').append('<li id="' + uniqid + '" class="list-group-item">' 
+            + ' ' + time + ' '
+            + '<span class="badge badge-primary">N2</span> <span class="badge badge-warning">CNP V-082</span> ' 
+            + '<a href="" class="btn btn-outline-dark btn-sm dwn" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>' + ' '
+            + '<button type="button" class="btn btn-outline-dark btn-sm listelement" data-id="' + uniqid + '"><i class="bi bi-x-circle"></i></button>'
+            + '<input type="hidden" name="listed[]" value="' + newitem + '"></li>');
+            $('#add').val('');
+          return false;
         });
-        // Clean button
-        jQuery(".btn-clean").on("click", function () {
+        // Reset button
+        jQuery(".btn-reset").click(function (e) {
+            e.preventDefault();
+            jQuery("#form")[0].reset();
+            // Regrets values
+            jQuery("#hijode, #domicilio, #ordinal").val("");
+            jQuery("#noaportahijode, #noaportadomicilio, #noid").removeClass("active");
+            jQuery("#form-submit").attr({"value": "Generar"}).removeAttr("disabled");
+            jQuery(".progress-bar-zip").removeAttr("style");
+            // Default values
+            document.getElementById("horaderechos").value = time;
+            document.getElementById("horadetencion").value = time;
+            document.getElementById("instructor").value = "130.301"; 
+        });
+        // Trash button
+        jQuery(".btn-trash").on("click", function () {
             jQuery(".duplicate").val("");
         });       
         // Horaderechos time
         const now = new Date(Date.now());
         const time = now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
+        // Default items
         document.getElementById("horaderechos").value = time;
+        document.getElementById("horadetencion").value = time;
         document.getElementById("instructor").value = "130.301"; 
-        // Name capitalize
+        // Capitalize
         jQuery("#nombre").keyup(function() {
           var caps = jQuery("#nombre").val(); 
           caps = caps.charAt(0).toUpperCase() + caps.slice(1);
@@ -61,7 +88,8 @@
         });
         // NI button
         jQuery("#noid").on("click", function () {
-          jQuery("#ordinal").attr("value", "N/I"); 
+          jQuery("#ordinal").attr("value", "N/I");
+          jQuery("#ordinal").prop("name", "ordinalnoid"); 
           jQuery(this).addClass("active"); 
         });
         // NA button
@@ -78,6 +106,11 @@
           source: autoCompleteUpper,
           autoFocus: true
         });
+        // Archive list
+        jQuery("#list").delegate(".listelement", "click", function() {
+          var elemid = $(this).attr("data-id");
+          jQuery("#" + elemid).remove();
+        });
       });
     });
  		</script>
@@ -90,10 +123,10 @@
         <!-- Body -->
         <div class="row g-5">
           <div class="col-md-12 col-lg-12">
-            <h4 class="mb-3">Ingreso detenido</h4>
+            <h4 class="mb-3">Ingreso detenido <button type="button" class="btn btn-outline-secondary btn-reset btn-sm"><i class="bi bi-arrow-clockwise"></i></button></h4>           
             <!-- Acta Header -->
             <h6>Datos del acta de información de derechos <span class="badge badge-primary">N2</span></h6>         
-            <form method="post" id="form">
+            <form method="post" id="form" class="mb-2">
               <div class="form-row">
                 <div class="form-group col-md-2 mb-2">
                   <div class="input-group mb-0">
@@ -103,7 +136,7 @@
                     <input type="text" class="form-control" placeholder="Hora de la hoja de derechos" id="horaderechos" name="horaderechos">
                   </div>
                 </div>
-                <div class="form-group col-md-8 mb-2">
+                <div class="form-group col-md-6 mb-2">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-people-fill"></i></div>
@@ -111,11 +144,15 @@
                     <input type="text" class="form-control" placeholder="Funcionarios que han procedido a la detención" name="funcionarios">
                   </div>
                 </div>   
-                <div class="form-group col-md-2 mb-2">
+                <div class="form-group col-md-4 mb-2">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-car-front-fill"></i></div>
                     </div>
+                    <select class="custom-select" name="cuerpo">
+                      <option selected value="PN">PN</option>
+                      <option value="PMM">PMM</option>
+                    </select>
                     <input type="text" class="form-control uppercase" placeholder="Indicativo" name="indicativo">
                   </div>
                 </div>
@@ -125,9 +162,9 @@
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active" id="det1-tab" data-bs-toggle="tab" data-bs-target="#det1" type="button" role="tab" aria-controls="det1" aria-selected="true">Detenido 1</button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <!--<li class="nav-item" role="presentation">
                       <button class="nav-link" id="det2-tab" data-bs-toggle="tab" data-bs-target="#det2" type="button" role="tab" aria-controls="det2" aria-selected="false">Detenido 2</button>
-                    </li>
+                    </li>-->
                   </ul>
                   <!-- Tab content -->
                   <div class="tab-content" id="TabContent">
@@ -232,6 +269,7 @@
                             <select class="custom-select" name="plantillaresena">
                               <option selected value="BPPC Madrid - Sector V">BPPC-SECTOR V</option>
                               <option value="BPPC Madrid - Grupo Noches">BPPC-GRUPO NOCHES</option>
+                              <option value="BPPC Madrid">BPPC</option>
                             </select>
                           </div>
                         </div>
@@ -268,7 +306,7 @@
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-clock"></i></div>
                     </div>
-                    <input type="text" class="form-control" placeholder="Hora detención" name="horadetencion">
+                    <input type="text" class="form-control" placeholder="Hora detención" name="horadetencion" id="horadetencion">
                   </div>
                 </div>
                 <div class="form-group col-md-10 mb-0">
@@ -277,55 +315,46 @@
                       <div class="input-group-text"><i class="bi bi-house-lock-fill"></i></div>
                     </div>
                     <input type="text" class="form-control uppercase duplicate" placeholder="Lugar de la detención" name="lugardetencion">
-                    <button type="button" class="btn btn-clean btn-outline-secondary"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-trash btn-outline-secondary"><i class="bi bi-trash"></i></button>
                   </div>
                 </div>
                 <div class="form-group col-md-12 mb-2">
                   <div class="input-group mb-2">
                     <textarea class="form-control" placeholder="Breve resumen de los hechos" rows="3" name="hechos"></textarea>
                   </div>  
-                </div>
-                <div class="form-group col-md-12 mb-0">
-                  <h6>Datos para remisión <span class="badge badge-primary">N2</span></h6>  
-                </div>
-                <div class="form-group col-md-12">
-                  <div class="input-group mb-0">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">Asunto</div>
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="N2 UN DETENIDO MALOS TRATOS CD PUENTE VALLECAS">
-                    <button type="button" class="btn btn-copy btn-outline-secondary"><i class="bi bi-clipboard"></i></button>
-                  </div>          
                 </div>    
               </div>
-              <input type="submit" class="w-100 btn btn-primary btn-lg mb-3" id="form-submit" value="Generar" /> 
-            </form>
-            <div class="table-responsive">
-              <table class="table table-striped mb-0">
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-6">
-                            Hoja de reseña y Nota informativa con detenido <span class="badge badge-warning">CNP V-082</span> <span class="badge badge-primary">N2</span>  
-                          </div>
-                          <div class="col-4">
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-zip" role="progressbar"></div>
+              <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-8" style="padding: 7px;">
+                              <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-zip" role="progressbar"></div>
+                              </div>
+                            </div>
+                            <div class="col-2">
+                              <input type="submit" class="btn btn-primary btn-sm btn-block" role="button" aria-pressed="true" id="form-submit" value="Generar" />
+                            </div>
+                            <div class="col-2">
+                              <a href="" class="btn btn-primary btn-sm dwn disabled" style="width: 100%;" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
                             </div>
                           </div>
-                          <div class="col-2">
-                            <a class="btn btn-secondary btn-sm dwn disabled" role="button" aria-pressed="true">Descargar <i class="bi bi-arrow-down-circle"></i></a>
-                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> 
+            </form>
+            <form id="form-list">
+              <div class="form-group">
+                <ul id="list" class="list-group"></ul>
+              </div>
+            </form>
           </div>
         </div>
       </main>
