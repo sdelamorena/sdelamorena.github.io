@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pelayo</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/ico" href="icons/pelayo.ico"/>
     <!-- Stylesheet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -17,24 +19,21 @@
 		// Form 
     $(document).ready(function(){
       // Send form
-      $("#form-submit").click(function(e){
-        if ($("#documento").children(":selected").attr("id") == 'indocumentado') {
-          jQuery("#numerodoc").prop("name", "indocumentado");
-          jQuery("#numerodoc").prop("value", "indocumentado"); 
-          jQuery("#form").append("<input type='hidden' name='ind' value='Sí'/>");   
+      jQuery("#form-submit").click(function(e){
+        // Indoc info
+        if($("#documento").children(":selected").attr("id") == 'indocumentado'){
+          var indocumentado = "&indocumentado=indocumentado"   
+          var ind = "&ind=Sí";
         }
         // Pending button
         $("#form-submit").attr({"disabled": "false", "value": "Generando archivos..."});
         $(".progress-bar-zip").css({"width": "60%"});
         // Finished button
-        $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize(), function(result){
-          if(result){
-            $("#form-submit").attr({"disabled": "false", "value": "Finalizado"});
-            $(".progress-bar-zip").css({"width": "100%"});
-            $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
-            $("#form :input").prop('disabled', true);
-            //alert($("#form").serialize());
-          } 
+        $.post("https://eocfiew5x2hxtym.m.pipedream.net", $("#form").serialize() + ind + indocumentado, function(result){
+          $("#form-submit").attr({"disabled": "false", "value": "Finalizado"});
+          $(".progress-bar-zip").css({"width": "100%"});
+          $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled");
+          $("#form :input").prop('disabled', true);
         });
       });
       // Horaderechos time
@@ -107,15 +106,26 @@
     <div class="container">
       <main>
         <!-- Header -->
-        <div class="py-3 text-center"><h3>Pelayo (2024)</h3></div>
+        <div class="py-3 text-center">
+          <img src="icons/pelayo.svg" width="65" height="65" class="mb-2" alt="Pelayo icon" />         
+          <h3>Pelayo</h3>
+        </div>
         <!-- Body -->
         <div class="row g-5">
           <div class="col-md-12 col-lg-12">
-            <h4 class="mb-3">Ingreso detenido <button type="button" class="btn btn-outline-secondary btn-reset btn-sm">Reset <i class="bi bi-arrow-clockwise"></i></button></h4>           
+            <button type="button" class="btn btn-outline-secondary btn-reset btn-sm mb-2">Reset <i class="bi bi-arrow-clockwise"></i></button>          
             <!-- Acta Header -->
             <h6>Datos del acta de información de derechos <span class="badge badge-primary">N2</span></h6>         
             <form method="post" id="form" class="mb-2">
               <div class="form-row">
+                <div class="form-group col-md-2 mb-2"> 
+                  <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="bi bi-person-badge"></i></div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
+                  </div>
+                </div>
                 <div class="form-group col-md-2 mb-2">
                   <div class="input-group mb-0">
                     <div class="input-group-prepend">
@@ -124,7 +134,7 @@
                     <input type="text" class="form-control" placeholder="Hora de la hoja de derechos" id="horaderechos" name="horaderechos">
                   </div>
                 </div>
-                <div class="form-group col-md-6 mb-2">
+                <div class="form-group col-md-5 mb-2">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-people-fill"></i></div>
@@ -132,7 +142,7 @@
                     <input type="text" class="form-control" placeholder="Funcionarios que han procedido a la detención" name="funcionarios">
                   </div>
                 </div>   
-                <div class="form-group col-md-4 mb-2">
+                <div class="form-group col-md-3 mb-2">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <div class="input-group-text"><i class="bi bi-car-front-fill"></i></div>
@@ -143,17 +153,17 @@
                       <option value="UPR">UPR</option>
                       <option value="PJ">PJ</option>
                       <option value="UIP">UIP</option>
-                      <option selected value="PN">PN / Genérico</option>
+                      <option selected value="PN">PN</option>
                       <option value="PMM">PMM</option>
                     </select>
-                    <input type="text" class="form-control uppercase autocomplete" placeholder="Indicativo" name="indicativo">
+                    <input type="text" class="form-control uppercase autocomplete" style="border-radius: 3px 3px 3px 3px;" placeholder="Indicativo" name="indicativo">
                   </div>
-                </div>
+                </div>             
                 <!-- Tabs -->
                 <div class="form-group col-md-12 mb-0">
                   <ul class="nav nav-tabs mb-2" id="Tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="det1-tab" data-bs-toggle="tab" data-bs-target="#det1" type="button" role="tab" aria-controls="det1" aria-selected="true">Detenido 1</button>
+                      <button class="nav-link active" id="det1-tab" data-bs-toggle="tab" data-bs-target="#det1" type="button" role="tab" aria-controls="det1" aria-selected="true">Detenido #1 <span class="badge badge-warning">CNP V-082</span></button>
                     </li>
                     <!--<li class="nav-item" role="presentation">
                       <button class="nav-link" id="det2-tab" data-bs-toggle="tab" data-bs-target="#det2" type="button" role="tab" aria-controls="det2" aria-selected="false">Detenido 2</button>
@@ -163,7 +173,7 @@
                   <div class="tab-content" id="TabContent">
                     <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
                       <div class="form-row">
-                        <div class="form-group col-md-4 mb-2">  
+                        <div class="form-group col-md-6 mb-2">  
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-person-fill"></i></div>
@@ -180,8 +190,8 @@
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-person-fill-up"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode">
                             <button type="button" class="btn btn-outline-secondary hijode" id="noaportahijode">N/A</button>
+                            <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode">
                           </div> 
                           <div class="input-group mb-0">
                             <div class="input-group-prepend">
@@ -195,18 +205,18 @@
                             </select>
                           </div>
                         </div>
-                        <div class="form-group col-md-4 mb-2">
+                        <div class="form-group col-md-6 mb-2">
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-flag-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase autocomplete" placeholder="Nacionalidad" name="nacionalidad">
+                            <input type="text" class="form-control uppercase autocomplete" style="border-radius: 3px 3px 3px 3px;" placeholder="Nacionalidad" name="nacionalidad">
                           </div>
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase autocomplete" placeholder="Lugar de nacimiento" name="lugarnacimiento">
+                            <input type="text" class="form-control uppercase autocomplete" style="border-radius: 3px 3px 3px 3px;" placeholder="Lugar de nacimiento" name="lugarnacimiento">
                           </div>
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
@@ -218,43 +228,26 @@
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-person-vcard"></i></div>
                             </div>
-                            <input type="text" style="background-color:#e9ecef;cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc" name="indocumentado">
+                            <input type="text" style="background-color:#e9ecef;cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
                           </div>
-                        </div>
-                        <div class="form-group col-md-4 mb-2">
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
-                            </div>
-                            <input type="text" class="form-control uppercase autocomplete" placeholder="Prov/País" name="provpais">
-                          </div>
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                              <div class="input-group-text"><i class="bi bi-person-circle"></i></div>
-                            </div>
-                            <select class="custom-select" name="sexo">
-                              <option selected value="MASCULINO">Masculino</option>
-                              <option value="FEMENINO">Femenino</option>
-                            </select>
-                          </div>   
                         </div>
                         <div class="form-group col-md-12 mb-0">
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-building-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio">
                             <button type="button" class="btn btn-outline-secondary domicilio" id="noaportadomicilio">N/A</button>
+                            <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio">
                           </div>
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-file-earmark-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control uppercase autocomplete" placeholder="Motivo de la detención" name="motivo">
+                            <input type="text" class="form-control uppercase autocomplete" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo">
                           </div>         
                         </div>
                         <!-- Amarilla Cabecera -->
-                        <div class="form-group col-md-4 mb-2">
+                        <div class="form-group col-md-3 mb-2">
                           <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-database-fill-up"></i></div>
@@ -266,22 +259,33 @@
                             </select>
                           </div>
                         </div>
-                        <div class="form-group col-md-4 mb-2">
+                        <div class="form-group col-md-3 mb-2">
                           <div class="input-group mb-0">
                             <div class="input-group-prepend">
                               <div class="input-group-text"><i class="bi bi-database-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal">
                             <button type="button" class="btn btn-outline-secondary" id="noid" value="noid">N/I</button>
+                            <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal">
                           </div> 
                         </div>
-                        <div class="form-group col-md-4 mb-2"> 
-                          <div class="input-group mb-0">
+                        <div class="form-group col-md-4 mb-2">
+                          <div class="input-group mb-2">
                             <div class="input-group-prepend">
-                              <div class="input-group-text"><i class="bi bi-person-badge"></i></div>
+                              <div class="input-group-text"><i class="bi bi-house-fill"></i></div>
                             </div>
-                            <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
+                            <input type="text" class="form-control uppercase autocomplete" style="border-radius: 3px 3px 3px 3px;" placeholder="Prov/País" name="provpais">
                           </div>
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                          <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text"><i class="bi bi-person-circle"></i></div>
+                            </div>
+                            <select class="custom-select" name="sexo">
+                              <option selected value="MASCULINO">Masculino</option>
+                              <option value="FEMENINO">Femenino</option>
+                            </select>
+                          </div>   
                         </div>
                       </div>
                     </div>
@@ -861,126 +865,11 @@
           'EXPULSION DE CONDENADOS',
           'OTRAS CAUSAS DE EXPULSION',
           'EJECUCION DE EXPULSION POR NO HABER ABANDONADO EL TERRITORIO NACIONAL EN EL PLAZO CONCEDIDO',
-          'IDENTIFICACION Ley O. 4/2015',
-          'art. 35.1 REUNION/MANIFESTACION PROHIBIDA/NO COMUNICA EN INSTALACION ESTRATEGICA Y/O SOBREVUELO',
-          'art. 35.2 FABRICA/TENENCIA DE ARMAS/EXPLOSIVOS CON PERJUICIO GRAVE',
-          'art. 35.3 ESPECTACULOS PROHIBIDOS',
-          'art. 35.4 PROYECCION HACES DE LUZ PILOTOS/CONDUCTORES TRANSPORTE',
-          'art. 36.1 PERTURBACION DE SEGURIDAD CIUDADANA EN ACTOS PUBLICOS',
-          'art. 36.2 PERTURBACION GRAVE SEDE CONGRESO/SENADO/ASAMBLEA',
-          'art. 36.3 DESORDENES PUBLICOS CON MOBILIARIO URBANO/VEHICULO/OBJETOS',
-          'art. 36.4 OBSTRUCCION AUTORIDAD/EMPLEADO PUBLICO EJERCICIO FUNCIONES',
-          'art. 36.5 OBSTACULALIZACION SERVICIOS EMERGENCIAS',
-          'art. 36.6 RESISTENCIA/DESOBEDIENCIA AUTORIDAD- NEGATIVA A IDENTIFICACION',
-          'art. 36.7 NEGATIVA DISOLUCION REUNION/MANIFESTACION',
-          'art. 36.8 PERTURBACION REUNION/MANIFESTACION LICITA',
-          'art. 36.9 INTRUSION/SOBREVUELO EN INFRAESTRUCTURA SERVICIOS BASICOS',
-          'art. 36.10 PORTAR/EXHIBIR/USAR ARMAS PROHIBIDAS',
-          'art. 36.11 SOLICITUD/ACEPTACION SERVICIOS SEXUALES RETRIBUIDOS',
-          'art. 36.12 FABRICA/TENENCIA DE ARMAS/EXPLOSIVOS',
-          'art. 36.13 NEGATIVA INSPECCION ESTABLECIMIENTO',
-          'art. 36.14 USO PUBLICO INDEBIDO UNIFORME/INSIGNIAS OFICIALES',
-          'art. 36.15 FALTA/NEGATIVA COLABORACION CON FF Y CC S',
-          'art. 36.16 CONSUMO/TENENCIA DROGAS EN VIAS PUBLICAS/ESTABLECIMIENTO/TRANSPORTE- ABANDONO DE INSTRUME',
-          'art. 36.17 TRASLADOS FACILITACION CONSUMO DROGAS (CUNDAS)',
-          'art. 36.18 PLANTACION DROGAS LUGAR VISIBLE AL PUBLICO',
-          'art. 36.19 TOLERANCIA CONSUMO DROGAS /ESTABLECIMIENTOSLOCALES',
-          'art. 36.20 CARENCIA REGISTROS ACTIVIDADES',
-          'art. 36.21 ALEGACION DATOS FALSOS PARA OBTENCION DOCUMENTACION',
-          'art. 36.22 IMCUMPLIR RESTRICCIONES NAVEGACION MAR/AIRE',
-          'art. 36.23 USO DATOS/IMAGENES AUTORIDADES/FF Y CC DE S',
-          'art. 37.1 REUNION/MANIFESTACION NO COMUNICADAS/PROHIBIDAS',
-          'art. 37.2 EXHIBICION OBJETOS PELIGROSOS ANIMO INTIMIDATORIO',
-          'art. 37.3 INCUMPLIMIENTO RESTRICCIONES PEATONALES',
-          'art. 37.4 FALTA RESPETO/CONSIDERACION A FF Y CC DE S.',
-          'art. 37.5 REALIZAR O INCITAR ACTOS OBSCENOS CONTRA LIB SEXUAL',
-          'art. 37.6 PROYECTAR HACES DE LUZ A FF Y CC DE S',
-          'art. 37.7 OCUPACION/PERMANENCIA INMUEBLE/VENTA AMBULANTE NO AUTORIZADA',
-          'art. 37.8 OMISION/CONSERVACION DOCUMENTOS ARMAS/EXPLOSIVOS- NO COMUNICAR PERDIDA',
-          'art. 37.9 IRREGULARIDAD REGISTROS/DATOS FALSOS- OMISION COMUNICACION EN PLAZOS',
-          'art. 37.10 OBLIGACION OBTENCION DNI -NEGLIGENCIA PERDIDA/SUSTRACCION',
-          'art. 37.11 3º o + PERDIDA/DETERIORO DNI EN 1 AÑO',
-          'art. 37.12 NEGATIVA A RETIRADA DNI',
-          'art. 37.13 DAÑOS/DESLUCIMIENTO BIENES MUEBLES/INMUEBLES',
-          'art. 37.14 ESCALO DE EDIFICIOS/MONUMENTOS',
-          'art. 37.15 REMOCION PRECINTOS/VALLAS COLOCADOS FF Y CC DE S',
-          'art. 37.16 LIBERAR ANIMAL /FEROZDAÑINO -ABANDONO ANIMAL DOMESTICO',
-          'art. 37.17 CONSUMO DE BEBIDAS ALCOHOLICAS LUGARES PUBLICOS',
           'LEGISLACION SOBRE REGIMEN ELECTORAL',
-          'LEY TRIBUNAL DEL JURADO',
-          'LEGISLACION SOBRE EL JUEGO',
-          'INFRACCION A LA LEGISLACION SOBRE CASINOS Y SALAS DE JUEGO',
-          'INFRACCION A LA LEGISLACION SOBRE LOTERIAS Y APUESTAS',
-          'INFRACCION A LA LEGISLACION SOBRE MAQUINAS RECREATIVAS Y DE AZAR',
-          'INFRACCION A LA LEGISLACION SOBRE RIFAS Y TOMBOLAS',
-          'OTRA INFRACCION A LA LEGISLACION SOBRE JUEGO',
-          'INFRACCION NORMATIVA SOBRE ARMAS',
-          'INFRACCION NORMATIVA SOBRE EXPLOSIVOS',
-          'INFRACCION A LA NORMATIVA SOBRE URBANISMO Y ORDENACION DE PATRIMONIO',
-          'INFRACCION A LA NORMATIVA SOBRE PATRIMONIO HISTORICO',
-          'INFRACCION A LA NORMATIVA SOBRE ACAMPADAS Y ALOJAMIENTOS TURISTICOS',
-          'INFRACCION A LA NORMATIVA SOBRE ASOCIACIONES',
-          'INFRACCION A LA NORMATIVA SOBRE PROTECCION CIVIL',
-          'INFRACCION NORMATIVA IMPUESTOS ESPECIALES',
-          'INFRACCION NORMATIVA MERCADO DE TABACO',
-          'INFRACCION NORMATIVA TELECOMUNICACIONES',
-          'NORMATIVA SEGURIDAD DE REDES Y SISTEMAS DE LA INFORMACION',
-          'INFRACCION A LA NORMATIVA SOBRE PROTECCION DE MENORES',
-          'INFRACCION NORMATIVA SERVICIOS SOCIEDAD DE LA INFORMACION Y DE COMERCIO',
-          'NORMATIVA PROTECCION DATOS PERSONALES Y GARANTIA DERECHOS DIGITALES',
-          'INFRACCION NORMATIVA SERVICIOS ELECTRONICOS DE CONFIANZA',
-          'INFRACCION NORMATIVA SANIDAD Y CONSUMO',
-          'INFRACCION NORMATIVA FINANCIERA, IVA Y OTROS TRIBUTOS',
           'OTRAS LEYES ESPECIALES',
-          'DISPOSICION AUT. GUBERNATIVA',
-          'INCUMPLIMIENTO NORMATIVA PREVENCION COVID-19',
-          'INFRACCION NORMATIVA ESPECTACULOS TAURINOS',
-          'INFRACCION NORMATIVA ACUSTICA',
-          'INFRACCION A LA NORMATIVA SOBRE COMERCIO O REPARACION DE OBJETOS USADOS',
-          'INFRACCION A LA NORMATIVA SOBRE COMPRAVENTA DE JOYAS Y METALES PRECIOSOS',
-          'INFRACCION A LA NORMATIVA SOBRE DESGUACE DE VEHICULOS DE MOTOR',
-          'LEGISLACION SOBRE SEGURIDAD PRIVADA',
-          'INFRACCION A LA NORMATIVA SOBRE HOSPEDAJE',
-          'INFRACCION ADMI JUEGO ONLINE',
-          'LEGISLACION SOBRE ESTABLECIMIENTOS, ESPECTACULOS PUBLICOS Y ACTIVIDADES RECREATIVAS',
-          'ACCIDENTE LABORAL',
-          'HECHOS DE CARÁCTER NO PENAL CON FINES DE ODIO Y DISCRIMINACION',
-          'DESAPARICION DE PERSONAS',
-          'REINTEGRO DE PERSONAS',
-          'COMUNICACION INFORMACION BASE SIAPSRN',
-          'CONCENTRACION LEGAL',
-          'MANIFESTACION LEGAL',
-          'SOLICITUD DE INFORMACION SOBRE SERVICIO SIAPSRN',
-          'CONSENTIMIENTO PARA SOLICITUD DE INFORMACION ADMINISTRATIVA',
-          'CONSENTIMIENTO PARA SOLICITUD DE INFORMACION E INCORPORACION DATOS A INTCF',
-          'REQUERIMIENTO ENTRE SIAPSRN Y PUNTO DE CONTACTO',
-          'COLABORACION JUDICIAL/FISCAL RELACIONADO CON RNS',
-          'SUICIDIO',
-          'SERVICIOS HUMANITARIOS',
-          'DESCUBRIMIENTO DE CADAVER Y RESTOS HUMANOS IDENTIFICADOS',
-          'DESCUBRIMIENTO DE RESTOS HUMANOS SIN IDENTIFICAR',
-          'MUERTE POR SOBREDOSIS',
-          'MUERTE EN INMIGRACION IRREGULAR',
-          'AHOGADOS',
-          'ATROPELLO DE TREN',
-          'INTERVENCIONES EN DESAHUCIOS',
-          'INSPECCIONES DE ESTABLECIMIENTOS',
-          'RESCATES Y SALVAMENTOS',
-          'DESALOJO DE INMUEBLES A INICIATIVA DE LAS FF. y CC de SEG. ESTADO',
-          'DESALOJO DE INMUEBLES A REQUERIMIENTO JUDICIAL',
           'RECLAMACION POLICIAL',
           'RECLAMACION JUDICIAL INTERNACIONAL',
           'RECLAMACION JUDICIAL NACIONAL',
-          'ABSENTISMO ESCOLAR',
-          'COMPROBACION DE ALARMAS',
-          'AVERIGUACIONES DE DOMICILIO Y PARADERO',
-          'ACTUACIONES MENORES/INCAPACES EN SITUACION DE RIESGO',
-          'OTROS AUXILIOS ADMINISTRATIVOS Y AUTORIDAD JUDICIAL',
-          'PUNTO DE VENTA DE DROGA DESACTIVADO',
-          'PERDIDA/EXTRAVIO DE OBJETOS/DOCUMENTACION',
-          'RECUPERACION DE OBJETOS/DOCUMENTACION DE PROCEDENCIA DESCONOCIDA',
-          'INCENDIOS FORTUITOS',
-          'INCENDIOS FORESTALES FORTUITOS',
           'Z-130',
           'Z-131',
           'Z-132',
@@ -1157,10 +1046,13 @@
           'PUERTO-1320'
         ];
         // Autocomplete
-        $( ".autocomplete" ).autocomplete({
-          source: autoData,
-          autoFocus: true
-        });   
+        jQuery(function() {
+          const autoDataUpper = autoData.map(name => name.toUpperCase());
+          $(".autocomplete").autocomplete({
+            source: autoDataUpper,
+            autoFocus: true
+          });   
+        });
       });
     </script>
 </html>
