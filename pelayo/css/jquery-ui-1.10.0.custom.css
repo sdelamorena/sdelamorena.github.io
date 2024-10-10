@@ -8,6 +8,10 @@
  * Portions copyright jQuery UI & Twitter Bootstrap
  */
 
+ul#Tab.nav.nav-tabs li.nav-item button {
+  cursor: pointer;
+} 
+
 /* Layout helpers
 ----------------------------------*/
 .ui-helper-hidden { display: none; }
