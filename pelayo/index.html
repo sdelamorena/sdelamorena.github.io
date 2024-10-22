@@ -44,8 +44,8 @@
           }).done(function(result){
             $("#form-submit").attr({"disabled": "disabled", "value": "Finalizado"});
             $(".progress-bar-zip").css({"width": "100%"});
-            $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled btn-outline-secondary").addClass("btn-success");
-            $("#form :input").prop("disabled", true);
+            $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled btn-outline-primary").addClass("btn-primary");
+            $("#form :input:not(:button)").prop("disabled", true);
           }).fail(function(){
             alert("On submit / Proxy error");
             $("#form-submit").prop({"value": "Generar (de nuevo)"}).removeAttr("disabled");
@@ -59,9 +59,9 @@
       // Horaderechos time
       const now = new Date(Date.now());
       const time = now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
-      // Default time items
-      document.getElementById("horaderechos").value = time;
+      // Default items
       document.getElementById("horadetencion").value = time;
+      document.getElementById("instructor").value = "130.301";
       // Capitalize field
       jQuery(".capitalize").keyup(function() {
         jQuery(this).val(jQuery(this).val().charAt(0).toUpperCase() + jQuery(this).val().slice(1));
@@ -97,7 +97,7 @@
         if (numerodoc != "indocumentado"){
           jQuery(".doc-field").css({"background-color":"#ffffff", "cursor":"text"});
         } else {
-          jQuery(".doc-field").css({"background-color":"#e9ecef", "cursor":"default"});
+          jQuery(".doc-field").css({"background-color":"var(--bs-tertiary-bg)", "cursor":"default"});
         }
         // Docs name and value elements
         if(tabId == "#det1"){
@@ -108,291 +108,213 @@
           jQuery("#det2 #numerodoc").prop("value", "");
         }
       });
-      // Resume list
-      jQuery(".resume").on("change", function() {
-        var tabId = jQuery(".active").attr("id");
-        jQuery(".list-group-item-" + tabId).toggle();
-        jQuery(".list-group-item").removeClass("border-1");
-        // Resume list tabs
-        jQuery(".list-resume-" + tabId).text(jQuery(this).val()); 
-        jQuery(".list-resume-dets-tab").text(jQuery(".list-resume-det1-tab").text() + " " + jQuery(".list-resume-det2-tab").text()); 
-        // Resume list strong
-        jQuery(".list-group-resume strong").text('2');
-      });
     });
  		</script>
-</head>
-  <body class="bg-body">
-    <header class="p-3 mb-3 border-bottom text-bg-light">
-      <div class="container container-fluid px-4">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="" class="d-flex align-items-center mb-lg-0 link-body-emphasis text-decoration-none">
-            <img src="icons/pelayo.svg" width="50" height="50" class="bi me-3" alt="Pelayo icon" />
-            <span class="fs-4 me-3">Pelayo Web</span>
-          </a>
-          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"></ul>
-          <div class="dropdown mt-2">
-            <button type="button" class="btn btn-outline-secondary btn-reset btn-sm mb-2">Reset <i class="bi bi-arrow-clockwise"></i></button>
-          </div>
+  </head>
+  <body class="bg-body-tertiary">
+    <header class="container p-0">
+      <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm bg-primary">
+        <span class="fs-4 me-3">Pelayo Web</span>
+        <div class="dropdown mt-2">
+          <button type="button" class="btn btn-outline-light btn-reset btn-sm mb-1">Reset <i class="bi bi-arrow-clockwise"></i></button>
         </div>
       </div>
     </header>
-    <div class="container container-fluid">
-      <main class="bg-body">
-        <form method="post" id="form">
-          <div class="container mb-2">
-          <div class="row mb-2">    
-            <div class="col-2">
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-clock"></i></span>
-                <input type="text" class="form-control" placeholder="Hora de la hoja de derechos" id="horaderechos" name="horaderechos">
-              </div>
-            </div>
-            <div class="col-7">
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                <input type="text" class="form-control" placeholder="Funcionarios que han procedido a la detención" name="funcionarios">
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-car-front-fill"></i></span>
-                <select class="form-select" name="cuerpo">
-                  <option value="GAC">GAC</option>
-                  <option value="GOR">GOR</option>
-                  <option value="UPR">UPR</option>
-                  <option value="PJ">PJ</option>
-                  <option value="UIP">UIP</option>
-                  <option selected value="PN">PN</option>
-                  <option value="PMM">PMM</option>
-                </select>
-                <input type="text" class="form-control uppercase autocompleteindicativo" style="border-radius: 3px 3px 3px 3px;" placeholder="Indicativo" name="indicativo">
-              </div>
-            </div>
-          </div>
-          <!-- Tabs -->
-          <ul class="nav nav-tabs mb-2" id="Tab">
-            <li class="nav-item">
-              <button class="nav-link active" id="det1-tab" data-bs-toggle="tab" data-bs-target="#det1" type="button" role="tab" aria-controls="det1" aria-selected="true">Detenido #1</button>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link" id="det2-tab" data-bs-toggle="tab" data-bs-target="#det2" type="button" role="tab" aria-controls="det2" aria-selected="false">Detenido #2</button>
-            </li>
-          </ul>
-          <!-- Tab content -->
-          <div class="row">
-            <div class="col-8">
-              <div class="tab-content" id="TabContent">
-                <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                    <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[0]">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                    <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[0]">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
-                    <span class="input-group-text input-group-text-hijode">N/A</span>
-                    <div class="input-group-text">
-                      <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[0]">
-                  </div> 
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
-                    <select class="form-select" id="documento">
-                      <option id="dninie">DNI/NIE</option>
-                      <option id="psp">Pasaporte español</option>
-                      <option id="otrodoc">Otro documento</option>
-                      <option id="indocumentado" selected>Indocumentado</option>
-                    </select>
-                    <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[0]">
-                    <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[0]">
-                    <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[0]"> 
-                  </div>  
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
-                    <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[0]">
-                    <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
-                    <select class="form-select" name="sexo[0]">
-                      <option selected value="MASCULINO">Masculino</option>
-                      <option value="FEMENINO">Femenino</option>
-                    </select>
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
-                    <span class="input-group-text input-group-text-domicilio">N/A</span>
-                    <div class="input-group-text">
-                      <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
-                    </div>
-                    <input type="text" class="form-control uppercase duplicate" placeholder="Domicilio" id="domicilio" name="domicilio[0]">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[0]">
-                  </div>  
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
-                    <span class="input-group-text input-group-text-ordinal">N/I</span>
-                    <div class="input-group-text">
-                      <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
-                    </div>
-                    <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[0]">
-                  </div>    
+    <main class="container my-3 p-3 bg-body rounded shadow-sm">
+      <h6>Datos del acta de información de derechos <span class="badge rounded-pill text-bg-primary">N2</span></h6> 
+      <form method="post" id="form">
+        <!-- Acta información derechos -->
+        <div class="input-group mb-2">
+          <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+          <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
+          <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+          <input type="text" class="form-control w-25" placeholder="Funcionarios que han procedido a la detención" name="funcionarios">
+          <span class="input-group-text"><i class="bi bi-car-front-fill"></i></span>
+          <select class="form-select" name="cuerpo">
+            <option value="GAC">GAC (ZETA)</option>
+            <option value="GOR">GOR (APV)</option>
+            <option value="UPR">UPR (BRONCE)</option>
+            <option value="PJ">PJ (VIKTOR)</option>
+            <option value="UIP">UIP (PUMA)</option>
+            <option selected value="PN">PN</option>
+            <option value="PMM">PMM</option>
+          </select>
+          <input type="text" class="form-control uppercase autocompleteindicativo" style="border-radius: 3px 5px 5px 3px;" placeholder="Indicativo" name="indicativo">
+        </div>
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-2" id="Tab">
+          <li class="nav-item">
+            <button class="nav-link active" id="det1-tab" data-bs-toggle="tab" data-bs-target="#det1" type="button" role="tab" aria-controls="det1" aria-selected="true">Detenido #1</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="det2-tab" data-bs-toggle="tab" data-bs-target="#det2" type="button" role="tab" aria-controls="det2" aria-selected="false">Detenido #2</button>
+          </li>
+        </ul>
+        <!-- Tab content -->
+        <div class="row">
+          <div class="col-12">
+            <div class="tab-content" id="TabContent">
+              <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                  <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[0]">
                 </div>
-                <!-- Tab #2 content -->
-                <div class="tab-pane fade" id="det2" role="tabpanel" aria-labelledby="det2-tab">
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                    <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[1]">
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                  <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[0]">
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
+                  <span class="input-group-text input-group-text-hijode">N/A</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
                   </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                    <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[1]">
+                  <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[0]">
+                </div> 
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+                  <select class="form-select" id="documento">
+                    <option id="dninie">DNI/NIE</option>
+                    <option id="psp">Pasaporte español</option>
+                    <option id="otrodoc">Otro documento</option>
+                    <option id="indocumentado" selected>Indocumentado</option>
+                  </select>
+                  <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[0]">
+                  <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[0]">
+                  <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[0]"> 
+                </div>  
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                  <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[0]">
+                  <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
+                  <select class="form-select" name="sexo[0]">
+                    <option selected value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
+                  </select>
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
+                  <span class="input-group-text input-group-text-domicilio">N/A</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
                   </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
-                    <span class="input-group-text input-group-text-hijode">N/A</span>
-                    <div class="input-group-text">
-                      <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
-                    </div>
-                    <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[1]">
+                  <input type="text" class="form-control uppercase duplicate" placeholder="Domicilio" id="domicilio" name="domicilio[0]">
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[0]">
+                </div>  
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
+                  <span class="input-group-text input-group-text-ordinal">N/I</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
                   </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
-                    <select class="form-select" id="documento">
-                      <option id="dninie">DNI/NIE</option>
-                      <option id="psp">Pasaporte español</option>
-                      <option id="otrodoc">Otro documento</option>
-                      <option id="indocumentado" selected>Indocumentado</option>
-                    </select>
-                    <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[1]">
-                    <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[1]">
-                    <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[1]"> 
-                  </div>  
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
-                    <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[1]">
-                    <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
-                    <select class="form-select" name="sexo[1]">
-                      <option selected value="MASCULINO">Masculino</option>
-                      <option value="FEMENINO">Femenino</option>
-                    </select>
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
-                    <span class="input-group-text input-group-text-domicilio">N/A</span>
-                    <div class="input-group-text">
-                      <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
-                    </div>
-                    <input type="text" class="form-control uppercase duplicate" placeholder="Domicilio" id="domicilio" name="domicilio[1]">
-                  </div>
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
-                    <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[1]">
-                  </div>  
-                  <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
-                    <span class="input-group-text input-group-text-ordinal">N/I</span>
-                    <div class="input-group-text">
-                      <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
-                    </div>
-                    <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[1]">
-                  </div>
-                </div>   
+                  <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[0]">
+                </div>    
               </div>
-          </div> 
-          <div class="col-4">
-            <ul class="list-group mb-3">
-              <li class="list-group-item list-group-item-det1-tab" style="display: none;">
-                <div>
-                  <h6 class="my-0">Hoja de reseña #1 <span class="badge text-bg-warning">CNP V-082</span></h6>
-                  <small class="text-body-secondary list-resume-det1-tab"></small>
+              <!-- Tab #2 content -->
+              <div class="tab-pane fade" id="det2" role="tabpanel" aria-labelledby="det2-tab">
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                  <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[1]">
                 </div>
-              </li>
-              <li class="list-group-item list-group-item-det2-tab" style="display: none;">
-                <div>
-                  <h6 class="my-0">Hoja de reseña #2 <span class="badge text-bg-warning">CNP V-082</span></h6>
-                  <small class="text-body-secondary list-resume-det2-tab"></small>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                  <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[1]">
                 </div>
-              </li>
-              <li class="list-group-item bg-body-tertiary border-1">
-                <div>
-                  <h6 class="my-0">Nota informativa con detenido <span class="badge text-bg-primary">N2</span></h6>
-                  <small class="text-body-secondary list-resume-dets-tab"></small>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
+                  <span class="input-group-text input-group-text-hijode">N/A</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
+                  </div>
+                  <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[1]">
                 </div>
-              </li>
-              <li class="list-group-item list-group-resume d-flex justify-content-between">
-                <span>Archivos a generar</span>
-                <strong>1</strong>
-              </li>
-            </ul>
-          </div> 
-          <!-- Elementos esenciales -->
-          <h6>Elementos esenciales de las actuaciones</h6> 
-          <div class="form-group col-md-2 mb-0">
-            <div class="input-group mb-0">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="bi bi-clock"></i></div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+                  <select class="form-select" id="documento">
+                    <option id="dninie">DNI/NIE</option>
+                    <option id="psp">Pasaporte español</option>
+                    <option id="otrodoc">Otro documento</option>
+                    <option id="indocumentado" selected>Indocumentado</option>
+                  </select>
+                  <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[1]">
+                  <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[1]">
+                  <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[1]"> 
+                </div>  
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                  <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[1]">
+                  <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
+                  <select class="form-select" name="sexo[1]">
+                    <option selected value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
+                  </select>
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
+                  <span class="input-group-text input-group-text-domicilio">N/A</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
+                  </div>
+                  <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio[1]">
+                </div>
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+                  <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[1]">
+                </div>  
+                <div class="input-group mb-2">
+                  <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
+                  <span class="input-group-text input-group-text-ordinal">N/I</span>
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
+                  </div>
+                  <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[1]">
+                </div>
+            </div>   
+          </div>
+        </div>  
+        <!-- Elementos esenciales -->
+        <h6>Información de los elementos esenciales de las actuaciones <span class="badge rounded-pill text-bg-primary">N2</span></h6>   
+        <div class="input-group mb-2">
+          <span class="input-group-text"><i class="bi bi-clock"></i></span>
+          <input type="text" class="form-control" placeholder="Hora detención" name="horadetencion" id="horadetencion">
+          <span class="input-group-text"><i class="bi bi-house-lock-fill"></i></span>
+          <input type="text" class="form-control w-75 uppercase" placeholder="Lugar de la detención" name="lugardetencion" id="lugardetencion">
+          <button type="button" class="btn btn-trash btn-outline-secondary"><i class="bi bi-trash"></i></button>
+        </div>  
+        <div class="input-group mb-2">
+          <textarea class="form-control capitalize" placeholder="Breve resumen de los hechos" rows="3" name="hechos"></textarea>
+        </div>
+        <!-- Respuesta -->
+        <div class="container">
+          <div class="row text-center">
+            <div class="col pb-3 pt-3">
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-zip" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" role="progressbar"></div>
               </div>
-              <input type="text" class="form-control" placeholder="Hora detención" name="horadetencion" id="horadetencion">
+            </div>
+            <div class="col p-1">
+              <button type="button" class="btn btn-primary" id="form-submit">Generar <i class="bi bi-lightning-charge-fill"></i></button>
+              <a role="button" class="btn btn-outline-primary dwn disabled">Descargar <i class="bi bi-arrow-down-circle"></i></a>                      
             </div>
           </div>
-          <div class="form-group col-md-10 mb-0">
-            <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="bi bi-house-lock-fill"></i></div>
-              </div>
-              <input type="text" class="form-control uppercase" placeholder="Lugar de la detención" name="lugardetencion" id="lugardetencion">
-              <button type="button" class="btn btn-trash btn-outline-secondary"><i class="bi bi-trash"></i></button>
-            </div>
-          </div>
-          <div class="input-group mb-2">
-            <textarea class="form-control capitalize" placeholder="Breve resumen de los hechos" rows="3" name="hechos"></textarea>
-          </div>
-          <!-- Respuesta -->
-          <div class="table-responsive mb-2">
-            <table class="table table-striped mb-0">
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-9" style="padding: 11px;">
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-zip" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" role="progressbar"></div>
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <div class="btn-group px-4" role="group">
-                            <button type="button" class="btn btn-primary" id="form-submit">Generar <i class="bi bi-lightning-charge-fill"></i></button>
-                            <a role="button" class="btn btn-outline-secondary dwn disabled">Descargar <i class="bi bi-arrow-down-circle"></i></a>
-                          </div>                                  
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </form>      
-      </main>
-    </div>
+        </div>
+      </form>      
+    </main>
     <script>
       $(function(){
         // Data
@@ -432,137 +354,7 @@
           'APV-206',
           'APV-207',
           'APV-208',
-          'BRONCE-0',
-          'BRONCE-1',
-          'BRONCE-2',
-          'BRONCE-3',
-          'BRONCE-4',
-          'BRONCE-5',
-          'BRONCE-6',
-          'BRONCE-7',
-          'BRONCE-8',
-          'BRONCE-9',
-          'BRONCE-10',
-          'BRONCE-11',
-          'BRONCE-12',
-          'BRONCE-13',
-          'BRONCE-14',
-          'BRONCE-15',
-          'BRONCE-16',
-          'BRONCE-17',
-          'BRONCE-18',
-          'BRONCE-19',
-          'BRONCE-20',
-          'BRONCE-21',
-          'BRONCE-22',
-          'BRONCE-23',
-          'BRONCE-24',
-          'BRONCE-25',
-          'BRONCE-26',
-          'BRONCE-27',
-          'BRONCE-28',
-          'BRONCE-29',
-          'BRONCE-30',
-          'BRONCE-31',
-          'BRONCE-32',
-          'BRONCE-33',
-          'BRONCE-34',
-          'BRONCE-35',
-          'BRONCE-36',
-          'BRONCE-37',
-          'BRONCE-38',
-          'BRONCE-39',
-          'BRONCE-40',
-          'BRONCE-41',
-          'BRONCE-42',
-          'BRONCE-43',
-          'BRONCE-44',
-          'BRONCE-45',
-          'BRONCE-46',
-          'BRONCE-47',
-          'BRONCE-48',
-          'BRONCE-49',
-          'BRONCE-50',
-          'BRONCE-51',
-          'BRONCE-52',
-          'BRONCE-53',
-          'BRONCE-54',
-          'BRONCE-55',
-          'BRONCE-56',
-          'BRONCE-57',
-          'BRONCE-58',
-          'BRONCE-59',
-          'BRONCE-60',
-          'BRONCE-61',
-          'BRONCE-62',
-          'BRONCE-63',
-          'BRONCE-64',
-          'BRONCE-65',
-          'BRONCE-66',
-          'BRONCE-67',
-          'BRONCE-68',
-          'BRONCE-69',
-          'BRONCE-70',
-          'BRONCE-71',
-          'BRONCE-72',
-          'BRONCE-73',
-          'BRONCE-74',
-          'BRONCE-75',
-          'BRONCE-76',
-          'BRONCE-77',
-          'BRONCE-78',
-          'BRONCE-79',
-          'BRONCE-80',
-          'BRONCE-81',
-          'BRONCE-82',
-          'BRONCE-83',
-          'BRONCE-84',
-          'BRONCE-85',
-          'BRONCE-86',
-          'BRONCE-87',
-          'BRONCE-88',
-          'BRONCE-89',
-          'BRONCE-90',
-          'BRONCE-91',
-          'BRONCE-92',
-          'BRONCE-93',
-          'BRONCE-94',
-          'BRONCE-95',
-          'BRONCE-96',
-          'BRONCE-97',
-          'BRONCE-98',
-          'BRONCE-99',
-          'BRONCE-100',
-          'BRONCE-101',
-          'BRONCE-102',
-          'BRONCE-103',
-          'BRONCE-104',
-          'BRONCE-105',
-          'BRONCE-106',
-          'BRONCE-107',
-          'BRONCE-108',
-          'BRONCE-109',
-          'BRONCE-110',
-          'BRONCE-111',
-          'BRONCE-112',
-          'BRONCE-113',
-          'BRONCE-114',
-          'BRONCE-115',
-          'BRONCE-116',
-          'BRONCE-117',
-          'BRONCE-118',
-          'BRONCE-119',
-          'BRONCE-120',
-          'BRONCE-121',
-          'BRONCE-122',
-          'BRONCE-123',
-          'BRONCE-124',
-          'BRONCE-125',
-          'BRONCE-126',
-          'BRONCE-127',
-          'BRONCE-128',
-          'BRONCE-129',
-          'BRONCE-130',
+          'BRONCE-',
           'PUERTO-1313',
           'PUERTO-1314',
           'PUERTO-1315',
