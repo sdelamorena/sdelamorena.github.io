@@ -20,6 +20,7 @@
     $(document).ready(function(){
       // Send form button
       jQuery("#form-submit").click(function(e) {
+        $("#form :input:not(:button)").prop("disabled", false);
         // Indocumentado conditional
         if($("#det1 #documento").children(":selected").attr("id") == 'indocumentado' && $("#det2 #documento").children(":selected").attr("id") == 'indocumentado'){
           var indocumentado = "&indocumentado[0]=Indocumentado&ind[0]=Sí&indocumentado[1]=Indocumentado&ind[1]=Sí";   
@@ -48,7 +49,8 @@
             $("#form :input:not(:button)").prop("disabled", true);
           }).fail(function(){
             alert("On submit / Proxy error");
-            $("#form-submit").prop({"value": "Generar (de nuevo)"}).removeAttr("disabled");
+            $("#form :input:not(:button)").prop("disabled", true);
+            $("#form-submit").removeAttr("disabled").html("Error: Reintentar <i class='bi bi-lightning-charge-fill'></i>");
             $(".progress-bar-zip").css({"width": "5%"});
           });
       });
@@ -121,10 +123,12 @@
       </div>
     </header>
     <main class="container my-3 p-3 bg-body rounded shadow-sm">
-      <h6>Datos del acta de información de derechos <span class="badge rounded-pill text-bg-primary">N2</span></h6> 
       <form method="post" id="form">
         <!-- Acta información derechos -->
+        <h6>Datos del acta de información de derechos <span class="badge rounded-pill text-bg-primary">N2</span></h6> 
         <div class="input-group mb-2">
+          <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+          <input type="text" class="form-control" placeholder="Nº de atestado" id="atestado" name="atestado">
           <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
           <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
           <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
@@ -151,142 +155,140 @@
           </li>
         </ul>
         <!-- Tab content -->
-        <div class="row">
-          <div class="col-12">
-            <div class="tab-content" id="TabContent">
-              <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                  <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[0]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                  <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[0]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
-                  <span class="input-group-text input-group-text-hijode">N/A</span>
-                  <div class="input-group-text">
-                    <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
-                  </div>
-                  <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[0]">
-                </div> 
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
-                  <select class="form-select" id="documento">
-                    <option id="dninie">DNI/NIE</option>
-                    <option id="psp">Pasaporte español</option>
-                    <option id="otrodoc">Otro documento</option>
-                    <option id="indocumentado" selected>Indocumentado</option>
-                  </select>
-                  <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[0]">
-                  <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[0]">
-                  <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[0]"> 
-                </div>  
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
-                  <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[0]">
-                  <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
-                  <select class="form-select" name="sexo[0]">
-                    <option selected value="MASCULINO">Masculino</option>
-                    <option value="FEMENINO">Femenino</option>
-                  </select>
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
-                  <span class="input-group-text input-group-text-domicilio">N/A</span>
-                  <div class="input-group-text">
-                    <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
-                  </div>
-                  <input type="text" class="form-control uppercase duplicate" placeholder="Domicilio" id="domicilio" name="domicilio[0]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[0]">
-                </div>  
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
-                  <span class="input-group-text input-group-text-ordinal">N/I</span>
-                  <div class="input-group-text">
-                    <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
-                  </div>
-                  <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[0]">
-                </div>    
+        <div class="tab-content" id="TabContent">
+          <!-- Tab #1 content -->
+          <div class="tab-pane fade show active" id="det1" role="tabpanel" aria-labelledby="det1-tab">
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+              <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[0]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+              <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[0]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
+              <span class="input-group-text input-group-text-hijode">N/A</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
               </div>
-              <!-- Tab #2 content -->
-              <div class="tab-pane fade" id="det2" role="tabpanel" aria-labelledby="det2-tab">
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                  <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[1]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                  <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[1]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
-                  <span class="input-group-text input-group-text-hijode">N/A</span>
-                  <div class="input-group-text">
-                    <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
-                  </div>
-                  <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[1]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
-                  <select class="form-select" id="documento">
-                    <option id="dninie">DNI/NIE</option>
-                    <option id="psp">Pasaporte español</option>
-                    <option id="otrodoc">Otro documento</option>
-                    <option id="indocumentado" selected>Indocumentado</option>
-                  </select>
-                  <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[1]">
-                  <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[1]">
-                  <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[1]"> 
-                </div>  
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
-                  <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[1]">
-                  <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
-                  <select class="form-select" name="sexo[1]">
-                    <option selected value="MASCULINO">Masculino</option>
-                    <option value="FEMENINO">Femenino</option>
-                  </select>
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
-                  <span class="input-group-text input-group-text-domicilio">N/A</span>
-                  <div class="input-group-text">
-                    <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
-                  </div>
-                  <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio[1]">
-                </div>
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
-                  <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[1]">
-                </div>  
-                <div class="input-group mb-2">
-                  <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
-                  <span class="input-group-text input-group-text-ordinal">N/I</span>
-                  <div class="input-group-text">
-                    <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
-                  </div>
-                  <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[1]">
-                </div>
-            </div>   
+              <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[0]">
+            </div> 
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+              <select class="form-select" id="documento">
+                <option id="dninie">DNI/NIE</option>
+                <option id="psp">Pasaporte español</option>
+                <option id="otrodoc">Otro documento</option>
+                <option id="indocumentado" selected>Indocumentado</option>
+              </select>
+              <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[0]">
+              <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[0]">
+              <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[0]"> 
+            </div>  
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+              <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[0]">
+              <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
+              <select class="form-select" name="sexo[0]">
+                <option selected value="MASCULINO">Masculino</option>
+                <option value="FEMENINO">Femenino</option>
+              </select>
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
+              <span class="input-group-text input-group-text-domicilio">N/A</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
+              </div>
+              <input type="text" class="form-control uppercase duplicate" placeholder="Domicilio" id="domicilio" name="domicilio[0]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[0]">
+            </div>  
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
+              <span class="input-group-text input-group-text-ordinal">N/I</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
+              </div>
+              <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[0]">
+            </div>    
           </div>
-        </div>  
+          <!-- Tab #2 content -->
+          <div class="tab-pane fade" id="det2" role="tabpanel" aria-labelledby="det2-tab">
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+              <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[1]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+              <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[1]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
+              <span class="input-group-text input-group-text-hijode">N/A</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
+              </div>
+              <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[1]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+              <select class="form-select" id="documento">
+                <option id="dninie">DNI/NIE</option>
+                <option id="psp">Pasaporte español</option>
+                <option id="otrodoc">Otro documento</option>
+                <option id="indocumentado" selected>Indocumentado</option>
+              </select>
+              <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[1]">
+              <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[1]">
+              <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[1]"> 
+            </div>  
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+              <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[1]">
+              <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
+              <select class="form-select" name="sexo[1]">
+                <option selected value="MASCULINO">Masculino</option>
+                <option value="FEMENINO">Femenino</option>
+              </select>
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
+              <span class="input-group-text input-group-text-domicilio">N/A</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
+              </div>
+              <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio[1]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[1]">
+            </div>  
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
+              <span class="input-group-text input-group-text-ordinal">N/I</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
+              </div>
+              <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[1]">
+            </div>
+          </div>  
+        </div>
         <!-- Elementos esenciales -->
         <h6>Información de los elementos esenciales de las actuaciones <span class="badge rounded-pill text-bg-primary">N2</span></h6>   
         <div class="input-group mb-2">
@@ -302,7 +304,7 @@
         <!-- Respuesta -->
         <div class="container">
           <div class="row text-center">
-            <div class="col pb-3 pt-3">
+            <div class="col py-3 px-0">
               <div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated progress-bar-zip" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" role="progressbar"></div>
               </div>
