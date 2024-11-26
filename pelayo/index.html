@@ -15,6 +15,8 @@
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <!-- Cookies -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 		<script type="text/javascript">
 		// Form 
     $(document).ready(function(){
@@ -22,15 +24,21 @@
       jQuery("#form-submit").click(function(e) {
         $("#form :input:not(:button)").prop("disabled", false);
         // Indocumentado conditional
-        if($("#det1 #documento").children(":selected").attr("id") == 'indocumentado' && $("#det2 #documento").children(":selected").attr("id") == 'indocumentado'){
+        if($("#det1 #documento").children(":selected").attr("id") == 'indocumentado' && $("#det2 #documento").children(":selected").attr("id") == 'indocumentado' && $("#det3 #documento").children(":selected").attr("id") == 'indocumentado'){
+          var indocumentado = "&indocumentado[0]=Indocumentado&ind[0]=Sí&indocumentado[1]=Indocumentado&ind[1]=Sí&indocumentado[2]=Indocumentado&ind[2]=Sí";   
+          var serialize = $("#form").serialize() + indocumentado;
+        } else if($("#det1 #documento").children(":selected").attr("id") == 'indocumentado' && $("#det2 #documento").children(":selected").attr("id") == 'indocumentado' && !($("#det3 #documento").children(":selected").attr("id") == 'indocumentado')){
           var indocumentado = "&indocumentado[0]=Indocumentado&ind[0]=Sí&indocumentado[1]=Indocumentado&ind[1]=Sí";   
           var serialize = $("#form").serialize() + indocumentado;
-        } else if ($("#det1 #documento").children(":selected").attr("id") == 'indocumentado' && !($("#det2 #documento").children(":selected").attr("id") == 'indocumentado')){
+        } else if ($("#det1 #documento").children(":selected").attr("id") == 'indocumentado' && !($("#det2 #documento").children(":selected").attr("id") == 'indocumentado') && !($("#det3 #documento").children(":selected").attr("id") == 'indocumentado')){
           var indocumentado = "&indocumentado[0]=Indocumentado&ind[0]=Sí";   
           var serialize = $("#form").serialize() + indocumentado;
-        } else if (!($("#det1 #documento").children(":selected").attr("id") == 'indocumentado') && $("#det2 #documento").children(":selected").attr("id") == 'indocumentado'){ 
-          var indocumentado = "&indocumentado[1]=Indocumentado&ind[1]=Sí";   
+        } else if (!($("#det1 #documento").children(":selected").attr("id") == 'indocumentado') && $("#det2 #documento").children(":selected").attr("id") == 'indocumentado' && $("#det3 #documento").children(":selected").attr("id") == 'indocumentado'){ 
+          var indocumentado = "&indocumentado[1]=Indocumentado&ind[1]=Sí&indocumentado[2]=Indocumentado&ind[2]=Sí";   
           var serialize = $("#form").serialize() + indocumentado;     
+        } else if (!($("#det1 #documento").children(":selected").attr("id") == 'indocumentado') && !($("#det2 #documento").children(":selected").attr("id") == 'indocumentado') && $("#det3 #documento").children(":selected").attr("id") == 'indocumentado'){ 
+          var indocumentado = "&indocumentado[2]=Indocumentado&ind[2]=Sí";   
+          var serialize = $("#form").serialize() + indocumentado;       
         } else {
           var serialize = $("#form").serialize();
         }
@@ -47,8 +55,13 @@
             $(".progress-bar-zip").css({"width": "100%"});
             $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled btn-outline-primary").addClass("btn-primary");
             $("#form :input:not(:button)").prop("disabled", true);
+            $("#collapse table tbody").append("<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href=" + result + ">Descargar</a></td></tr>");
+            // Work with cookies
+            var historial = "<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href=" + result + ">Descargar</a></td></tr>";
+            var historicalcookie = Cookies.get('historial');
+            Cookies.set("historial", historicalcookie + historial, {expires: 1});
           }).fail(function(){
-            alert("On submit / Proxy error");
+            alert("On submit error / Proxy error");
             $("#form :input:not(:button)").prop("disabled", true);
             $("#form-submit").removeAttr("disabled").html("Error: Reintentar <i class='bi bi-lightning-charge-fill'></i>");
             $(".progress-bar-zip").css({"width": "5%"});
@@ -92,7 +105,7 @@
         jQuery("#lugardetencion").val("");
       });
       // Docs disabled onclick()
-      jQuery("#det1 #documento, #det2 #documento").on("click", function () {
+      jQuery("#det1 #documento, #det2 #documento, #det3 #documento").on("click", function () {
         var tabId = jQuery(".active").attr("data-bs-target"); 
         var numerodoc = jQuery(this).children(":selected").attr("id");
         // Numerodoc css element
@@ -102,49 +115,30 @@
           jQuery(".doc-field").css({"background-color":"var(--bs-tertiary-bg)", "cursor":"default"});
         }
         // Docs name and value elements
-        if(tabId == "#det1"){
-          jQuery("#det1 #numerodoc").prop("name", numerodoc + "[0]");
-          jQuery("#det1 #numerodoc").prop("value", "");
-        } else {
-          jQuery("#det2 #numerodoc").prop("name", numerodoc + "[1]");
-          jQuery("#det2 #numerodoc").prop("value", "");
-        }
+        jQuery(tabId + " #numerodoc").prop("name", numerodoc + "[" + (Number(tabId.slice(-1)) - 1) + "]");
+        jQuery(tabId + " #numerodoc").prop("value", "");
+      });
+      // Historial load
+      jQuery("#collapse table tbody").append(Cookies.get('historial'));
+      // Historial button
+      jQuery(".btn-historial-clean").on("click", function () {
+        jQuery("#collapse table tbody").remove();
+        Cookies.remove('historial');
       });
     });
  		</script>
   </head>
   <body class="bg-body-tertiary">
     <header class="container p-0">
-      <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm bg-primary">
+      <div class="d-flex align-items-center p-3 my-2 text-white rounded shadow-sm bg-primary">
         <span class="fs-4 me-3">Pelayo Web</span>
         <div class="dropdown mt-2">
           <button type="button" class="btn btn-outline-light btn-reset btn-sm mb-1">Reset <i class="bi bi-arrow-clockwise"></i></button>
         </div>
       </div>
     </header>
-    <main class="container my-3 p-3 bg-body rounded shadow-sm">
+    <main class="container my-2 p-3 bg-body rounded shadow-sm">
       <form method="post" id="form">
-        <!-- Acta información derechos -->
-        <h6>Datos del acta de información de derechos <span class="badge rounded-pill text-bg-primary">N2</span></h6> 
-        <div class="input-group mb-2">
-          <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
-          <input type="text" class="form-control" placeholder="Nº de atestado" id="atestado" name="atestado">
-          <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
-          <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
-          <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-          <input type="text" class="form-control w-25" placeholder="Funcionarios que han procedido a la detención" name="funcionarios">
-          <span class="input-group-text"><i class="bi bi-car-front-fill"></i></span>
-          <select class="form-select" name="cuerpo">
-            <option value="GAC">GAC (ZETA)</option>
-            <option value="GOR">GOR (APV)</option>
-            <option value="UPR">UPR (BRONCE)</option>
-            <option value="PJ">PJ (VIKTOR)</option>
-            <option value="UIP">UIP (PUMA)</option>
-            <option selected value="PN">PN</option>
-            <option value="PMM">PMM</option>
-          </select>
-          <input type="text" class="form-control uppercase autocompleteindicativo" style="border-radius: 3px 5px 5px 3px;" placeholder="Indicativo" name="indicativo">
-        </div>
         <!-- Tabs -->
         <ul class="nav nav-tabs mb-2" id="Tab">
           <li class="nav-item">
@@ -152,6 +146,9 @@
           </li>
           <li class="nav-item">
             <button class="nav-link" id="det2-tab" data-bs-toggle="tab" data-bs-target="#det2" type="button" role="tab" aria-controls="det2" aria-selected="false">Detenido #2</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="det3-tab" data-bs-toggle="tab" data-bs-target="#det3" type="button" role="tab" aria-controls="det3" aria-selected="false">Detenido #3</button>
           </li>
         </ul>
         <!-- Tab content -->
@@ -288,21 +285,104 @@
               <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[1]">
             </div>
           </div>  
+          <!-- Tab #3 content -->
+          <div class="tab-pane fade" id="det3" role="tabpanel" aria-labelledby="det3-tab">
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+              <input type="text" class="form-control capitalize resume" placeholder="Nombre" id="nombre" name="nombre[2]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+              <input type="text" class="form-control uppercase" placeholder="Apellidos" name="apellidos[2]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-fill-up"></i></span>
+              <span class="input-group-text input-group-text-hijode">N/A</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 hijode" type="checkbox" id="noaportahijode">
+              </div>
+              <input type="text" class="form-control uppercase" placeholder="Hijo/a de" id="hijode" name="hijode[2]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+              <select class="form-select" id="documento">
+                <option id="dninie">DNI/NIE</option>
+                <option id="psp">Pasaporte español</option>
+                <option id="otrodoc">Otro documento</option>
+                <option id="indocumentado" selected>Indocumentado</option>
+              </select>
+              <input type="text" style="background-color: var(--bs-tertiary-bg);cursor:default;" class="form-control doc-field" placeholder="Número de documentación" id="numerodoc">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-house-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" placeholder="Lugar de nacimiento" name="lugarnacimiento[2]">
+              <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" placeholder="Provincia/País" name="provpais[2]">
+              <span class="input-group-text"><i class="bi bi-flag-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletelugar" style="border-radius: 0px 5px 5px 0px;" placeholder="Nacionalidad" name="nacionalidad[2]"> 
+            </div>  
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+              <input type="text" class="form-control uppercase" placeholder="Fecha de nacimiento" name="fechanacimiento[2]">
+              <span class="input-group-text"><i class="bi bi-person-circle"></i></span>   
+              <select class="form-select" name="sexo[2]">
+                <option selected value="MASCULINO">Masculino</option>
+                <option value="FEMENINO">Femenino</option>
+              </select>
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-building-fill"></i></span>
+              <span class="input-group-text input-group-text-domicilio">N/A</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 domicilio" type="checkbox" id="noaportadomicilio">
+              </div>
+              <input type="text" class="form-control uppercase" placeholder="Domicilio" id="domicilio" name="domicilio[2]">
+            </div>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+              <input type="text" class="form-control uppercase autocompletemotivo" style="border-radius: 3px 3px 3px 3px;" placeholder="Motivo de la detención" name="motivo[2]">
+            </div>  
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-database-fill"></i></span>
+              <span class="input-group-text input-group-text-ordinal">N/I</span>
+              <div class="input-group-text">
+                <input class="form-check-input mt-0 ordinal" type="checkbox" id="noid">
+              </div>
+              <input type="text" class="form-control" placeholder="Nº de ordinal" id="ordinal" name="ordinal[2]">
+            </div>
+          </div>
         </div>
-        <!-- Elementos esenciales -->
-        <h6>Información de los elementos esenciales de las actuaciones <span class="badge rounded-pill text-bg-primary">N2</span></h6>   
         <div class="input-group mb-2">
+          <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+          <input type="text" class="form-control" placeholder="Instructor" id="instructor" name="instructor">
+          <span class="input-group-text"><i class="bi bi-file-earmark-fill"></i></span>
+          <input type="text" class="form-control" placeholder="Nº de atestado" id="atestado" name="atestado">
           <span class="input-group-text"><i class="bi bi-clock"></i></span>
           <input type="text" class="form-control" placeholder="Hora detención" name="horadetencion" id="horadetencion">
+          <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+          <input type="text" class="form-control w-25" placeholder="Funcionarios que han procedido a la detención" name="funcionarios">
+          <span class="input-group-text"><i class="bi bi-car-front-fill"></i></span>
+          <select class="form-select" name="cuerpo">
+            <option value="GAC">GAC</option>
+            <option value="GOR">GOR</option>
+            <option value="UPR">UPR</option>
+            <option value="PJ">PJ</option>
+            <option value="UIP">UIP</option>
+            <option value="PMM">PMM</option>
+            <option selected value="PN">PN</option>
+          </select>
+          <input type="text" class="form-control uppercase autocompleteindicativo" style="border-radius: 3px 5px 5px 3px;" placeholder="Indicativo" name="indicativo">
+        </div>  
+        <div class="input-group mb-2">
           <span class="input-group-text"><i class="bi bi-house-lock-fill"></i></span>
-          <input type="text" class="form-control w-75 uppercase" placeholder="Lugar de la detención" name="lugardetencion" id="lugardetencion">
+          <input type="text" class="form-control uppercase" placeholder="Lugar de la detención" name="lugardetencion" id="lugardetencion">
           <button type="button" class="btn btn-trash btn-outline-secondary"><i class="bi bi-trash"></i></button>
         </div>  
         <div class="input-group mb-2">
           <textarea class="form-control capitalize" placeholder="Breve resumen de los hechos" rows="3" name="hechos"></textarea>
         </div>
         <!-- Respuesta -->
-        <div class="container">
+        <div class="container mb-2">
           <div class="row text-center">
             <div class="col py-3 px-0">
               <div class="progress">
@@ -313,6 +393,27 @@
               <button type="button" class="btn btn-primary" id="form-submit">Generar <i class="bi bi-lightning-charge-fill"></i></button>
               <a role="button" class="btn btn-outline-primary dwn disabled">Descargar <i class="bi bi-arrow-down-circle"></i></a>                      
             </div>
+          </div>
+        </div>
+        <div class="card text-center">
+          <div class="card-header border-bottom-0">
+            <button type="button" class="btn btn-outline-secondary btn-historial" data-bs-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapse">
+              Historial <i class="bi bi-clock-history"></i>
+            </button>
+          </div>
+          <div class="card-body collapse" id="collapse">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Hora</th>
+                  <th scope="col">Indicativo</th>
+                  <th scope="col">Motivo</th>
+                  <th scope="col">Archivos</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <button type="button" class="btn btn-primary btn-sm btn-historial-clean">Limpiar</button>
           </div>
         </div>
       </form>      
@@ -357,14 +458,7 @@
           'APV-207',
           'APV-208',
           'BRONCE-',
-          'PUERTO-1313',
-          'PUERTO-1314',
-          'PUERTO-1315',
-          'PUERTO-1316',
-          'PUERTO-1317',
-          'PUERTO-1318',
-          'PUERTO-1319',
-          'PUERTO-1320'
+          'PUERTO-'
         ];
         var autoDataMotivo = [
           'HOMICIDIO (homicidio doloso)',
