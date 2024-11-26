@@ -53,11 +53,12 @@
           }).done(function(result){
             $("#form-submit").attr({"disabled": "disabled", "value": "Finalizado"});
             $(".progress-bar-zip").css({"width": "100%"});
-            $(".dwn").attr("href", "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip").removeClass("disabled btn-outline-primary").addClass("btn-primary");
+            var url = "https://pub-4fc588ccc60240bea3d2b60ed13022bd.r2.dev/" + result + ".zip";
+            $(".dwn").attr("href", url).removeClass("disabled btn-outline-primary").addClass("btn-primary");
             $("#form :input:not(:button)").prop("disabled", true);
-            $("#collapse table tbody").append("<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href=" + result + ">Descargar</a></td></tr>");
+            $("#collapse table tbody").append("<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href='" + url + "'>Descargar</a></td></tr>");
             // Work with cookies
-            var historial = "<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href=" + result + ">Descargar</a></td></tr>";
+            var historial = "<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href='" + url + "'>Descargar</a></td></tr>";
             var historicalcookie = Cookies.get('historial');
             Cookies.set("historial", historicalcookie + historial, {expires: 1});
           }).fail(function(){
