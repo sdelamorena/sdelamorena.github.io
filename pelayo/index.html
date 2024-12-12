@@ -60,11 +60,13 @@
             var historial = "<tr><td>" + time + "</td><td>" + $(".autocompleteindicativo").val() + "</td><td>" + $(".autocompletemotivo").val() + "</td><td><a href='" + url + "'>Descargar</a></td></tr>";
             var historicalcookie = Cookies.get('historial');
             Cookies.set("historial", historicalcookie + historial, {expires: 1});
-          }).fail(function(){
-            alert("On submit error / Proxy error");
-            $("#form-submit").removeAttr("disabled").html("Error: Reintentar <i class='bi bi-lightning-charge-fill'></i>");
-            $("#form :input:not(:button)").prop("disabled", true);
-            $(".progress-bar-zip").css({"width": "5%"});
+            // Error with done
+            if (result == null){
+              alert("On submit error / Proxy error");
+              $("#form-submit").removeAttr("disabled").html("Error: Reintentar <i class='bi bi-lightning-charge-fill'></i>");
+              $("#form :input:not(:button)").prop("disabled", true);
+              $(".progress-bar-zip").css({"width": "5%"});  
+            }
           });
       });
       // Reset button
